@@ -30,16 +30,10 @@ export const utilityApps: DesktopApp[] = [
   { id: "terminal", label: "Terminal", glyph: ">_", tone: "terminal" },
   { id: "photos", label: "Photos", glyph: "◒", tone: "photo" },
   { id: "notes", label: "Notes.txt", glyph: "≡", tone: "paper" },
+  { id: "brain-bits", label: "Brain Bits", glyph: "◉", tone: "news" },
 ];
 
-export const brainBitsApp: DesktopApp = {
-  id: "brain-bits",
-  label: "Brain Bits",
-  glyph: "◉",
-  tone: "news",
-};
-
-export const allApps = [...desktopApps, ...utilityApps, brainBitsApp];
+export const allApps = [...desktopApps, ...utilityApps];
 export const appIds = new Set<AppId>(allApps.map((app) => app.id));
 
 export const dockApps = [
@@ -50,5 +44,20 @@ export const dockApps = [
   desktopApps[4],
   utilityApps[2],
   utilityApps[3],
-  brainBitsApp,
+  utilityApps[4],
 ];
+
+// Edit this list to choose which apps appear in the phone dock.
+// The order here is also the left-to-right order in the dock.
+export const mobileDockAppIds: AppId[] = [
+  "about",
+  "projects",
+  "leaderboard",
+  "brain-bits",
+];
+
+export const mobileDockApps = mobileDockAppIds.map((id) => {
+  const app = allApps.find((item) => item.id === id);
+  if (!app) throw new Error(`Unknown mobile dock app: ${id}`);
+  return app;
+});

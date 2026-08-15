@@ -388,6 +388,10 @@ a {
     background: rgba(10, 20, 42, .65)
 }
 
+.dock.mobileDock {
+    display: none
+}
+
 .dockIcon {
     border: 1px solid rgba(255, 255, 255, .32);
     width: 52px;
@@ -443,7 +447,6 @@ a {
 }
 
 .dockIcon.news {
-    margin-left: 5px;
     background: linear-gradient(145deg, #ffd56a, #e56e36);
     color: #241407
 }
@@ -1333,7 +1336,42 @@ a {
     }
 
     .dock {
+        position: fixed;
+        z-index: 18;
+        bottom: max(8px, env(safe-area-inset-bottom));
+        align-items: end;
+        gap: 6px;
+        width: calc(100% - 16px);
+        max-width: 480px;
+        padding: 7px;
+        border-radius: 17px
+    }
+
+    .dock.desktopDock {
         display: none
+    }
+
+    .dock.mobileDock {
+        display: grid
+    }
+
+    .dockIcon {
+        width: 100%;
+        max-width: 52px;
+        min-width: 0;
+        height: auto;
+        aspect-ratio: 1;
+        justify-self: center;
+        border-radius: 10px
+    }
+
+    .dockIcon:hover,
+    .dockIcon:focus-visible {
+        transform: translateY(-5px) scale(1.04)
+    }
+
+    .dockIcon span {
+        font-size: clamp(9px, 3.2vw, 14px)
     }
 
     .appWindow {
@@ -1348,7 +1386,8 @@ a {
     }
 
     .appScroll {
-        height: calc(100% - 48px)
+        height: calc(100% - 48px);
+        padding-bottom: calc(72px + env(safe-area-inset-bottom))
     }
 
     .appPane {

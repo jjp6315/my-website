@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { buildStandings, formatThru, formatToPar } from "../standings";
 import type { GolfHoleScore, GolfScoresResponse } from "../types";
@@ -34,5 +35,5 @@ export default function ScoreTicker() {
 }
 
 function LinkToLeaderboard() {
-  return <a className="tickerRound" href="/golf/leaderboard"><b>R2</b><span>LIVE</span></a>;
+  return <Link className="tickerRound" href="/golf/leaderboard"><b>R2</b><span>LIVE</span></Link>;
 }

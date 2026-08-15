@@ -21,6 +21,7 @@ import {
   appIds,
   desktopApps,
   dockApps,
+  mobileDockApps,
   utilityApps,
   type AppId,
 } from "./desktop/appConfig";
@@ -160,8 +161,25 @@ export default function Desktop() {
         </section>
       )}
 
-      <nav className="dock windowGlass" aria-label="Application dock">
+      <nav className="dock desktopDock windowGlass" aria-label="Desktop application dock">
         {dockApps.map((app) => (
+          <button
+            key={app.id}
+            className={`dockIcon ${app.tone} ${active === app.id ? "running" : ""}`}
+            onClick={() => openApp(app.id)}
+            aria-label={`Open ${app.label}`}
+          >
+            <span>{app.glyph}</span>
+          </button>
+        ))}
+      </nav>
+
+      <nav
+        className="dock mobileDock windowGlass"
+        aria-label="Phone application dock"
+        style={{ gridTemplateColumns: `repeat(${mobileDockApps.length}, minmax(0, 1fr))` }}
+      >
+        {mobileDockApps.map((app) => (
           <button
             key={app.id}
             className={`dockIcon ${app.tone} ${active === app.id ? "running" : ""}`}
