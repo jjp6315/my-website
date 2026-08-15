@@ -1,22 +1,21 @@
 export default function AboutApp() {
   return (
     <div className="aboutApp appPane">
-      <p className="appKicker">Hello, world.</p>
+      <p className="appKicker">Hello</p>
       <h1>
-        I turn fuzzy ideas into <em>useful digital things.</em>
+        I will learn with<em> technology at my fingertips.</em>
       </h1>
       <div className="aboutGrid">
         <p>
-          I’m Your Name, a product-minded engineer based in New York. I care
-          about fast software, humane interfaces, and details that make a
-          product memorable.
+          I am a Software Engineer based in Boston. My coding ideology is to build software that
+          starts as an idea and grows into a product that is useful to people.
         </p>
         <div className="identityCard">
-          <span>YN</span>
+          <span>JP</span>
           <div>
-            <b>Your Name</b>
-            <small>Product Engineer</small>
-            <small className="online">Available for the right role</small>
+            <b>Ji Woong John Park</b>
+            <small>Software Engineer</small>
+            <small className="online">Online</small>
           </div>
         </div>
       </div>
@@ -24,8 +23,9 @@ export default function AboutApp() {
         <span>TypeScript</span>
         <span>React</span>
         <span>SQL</span>
-        <span>Creative code</span>
-        <span>Photography</span>
+        <span>VB.Net</span>
+        <span>Python</span>
+        <span>C#</span>
       </div>
     </div>
   );

@@ -429,10 +429,10 @@ a {
     color: #53657e
 }
 
-.dockIcon.grid {
+.dockIcon.news {
     margin-left: 5px;
-    background: rgba(255, 255, 255, .06);
-    color: #9cadc9
+    background: linear-gradient(145deg, #ffd56a, #e56e36);
+    color: #241407
 }
 
 .appWindow {
@@ -879,6 +879,148 @@ a {
     font: inherit
 }
 
+.dailyBriefApp {
+    min-height: 100%;
+    padding: 34px clamp(28px, 6vw, 70px) 54px;
+    color: #171713;
+    background: #f4f0e5;
+    font-family: Georgia, "Times New Roman", serif
+}
+
+.dailyBriefStatus {
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    padding: 40px;
+    color: #29271f;
+    background: #f4f0e5;
+    font: italic 18px Georgia, serif
+}
+
+.briefMasthead {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 17px;
+    border-bottom: 3px double #25231c
+}
+
+.briefMasthead p {
+    margin: 0
+}
+
+.briefEyebrow {
+    font-size: clamp(22px, 3vw, 34px);
+    font-weight: 700;
+    letter-spacing: -.04em
+}
+
+.briefEdition,
+.briefMasthead time,
+.briefStoryMeta,
+.briefPrompt span {
+    font: 9px var(--font-geist-mono);
+    letter-spacing: .11em;
+    text-transform: uppercase
+}
+
+.briefEdition {
+    margin-top: 5px !important;
+    color: #8a431d
+}
+
+.briefMasthead time {
+    color: #666157;
+    text-align: right
+}
+
+.briefLead {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 8px 28px;
+    padding: 38px 0 34px;
+    border-bottom: 1px solid #bdb7aa
+}
+
+.briefLead>p:first-child {
+    margin: 8px 0 0;
+    color: #a14920;
+    font: italic 15px Georgia, serif
+}
+
+.briefLead h1 {
+    margin: 0;
+    max-width: 620px;
+    font-size: clamp(38px, 5.5vw, 64px);
+    line-height: .96;
+    letter-spacing: -.055em
+}
+
+.briefLead>p:last-child {
+    grid-column: 2;
+    max-width: 570px;
+    margin: 10px 0 0;
+    color: #5f5b52;
+    font-size: 16px;
+    line-height: 1.55
+}
+
+.briefStories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-bottom: 1px solid #bdb7aa
+}
+
+.briefStory {
+    padding: 26px 24px 30px 0
+}
+
+.briefStory+.briefStory {
+    padding-left: 24px;
+    border-left: 1px solid #bdb7aa
+}
+
+.briefStoryMeta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: #8a431d
+}
+
+.briefStory h2 {
+    margin: 22px 0 12px;
+    font-size: 24px;
+    line-height: 1.04;
+    letter-spacing: -.025em
+}
+
+.briefStory p {
+    margin: 0;
+    color: #5f5b52;
+    font-size: 14px;
+    line-height: 1.55
+}
+
+.briefPrompt {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 24px;
+    padding-top: 28px
+}
+
+.briefPrompt span {
+    color: #8a431d
+}
+
+.briefPrompt p {
+    margin: -4px 0 0;
+    max-width: 570px;
+    font-size: 24px;
+    line-height: 1.25
+}
+
 .notesApp {
     max-width: 720px;
     margin: auto;
@@ -1114,6 +1256,46 @@ a {
 
     .photoGrid {
         grid-template-columns: 1fr 1fr
+    }
+
+    .dailyBriefApp {
+        padding: 24px 20px 40px
+    }
+
+    .briefMasthead {
+        align-items: flex-start
+    }
+
+    .briefMasthead time {
+        max-width: 125px
+    }
+
+    .briefLead {
+        grid-template-columns: 1fr;
+        padding: 28px 0 26px
+    }
+
+    .briefLead>p:last-child {
+        grid-column: 1
+    }
+
+    .briefStories {
+        grid-template-columns: 1fr
+    }
+
+    .briefStory {
+        padding: 24px 0
+    }
+
+    .briefStory+.briefStory {
+        padding-left: 0;
+        border-left: 0;
+        border-top: 1px solid #bdb7aa
+    }
+
+    .briefPrompt {
+        grid-template-columns: 1fr;
+        gap: 14px
     }
 
     .notesApp {

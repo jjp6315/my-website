@@ -15,6 +15,13 @@
       "when": 1786763258328,
       "tag": "0001_lowly_stone_men",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1786774382173,
+      "tag": "0002_yellow_captain_cross",
+      "breakpoints": true
     }
   ]
 }

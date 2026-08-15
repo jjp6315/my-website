@@ -13,7 +13,7 @@ export default function PhotosApp() {
       <div className="photoHeader">
         <div>
           <p className="appKicker">Photo stream</p>
-          <h1>Places I paused.</h1>
+          <h1>Places I visited.</h1>
         </div>
         <span>{photos.length} moments</span>
       </div>

@@ -36,7 +36,10 @@ export default function LeaderboardApp() {
     });
 
     if (!response.ok) {
-      setMessage("Connect the database after deployment to save scores.");
+      const error = (await response.json().catch(() => null)) as
+        | { error?: string }
+        | null;
+      setMessage(error?.error ?? "The score could not be saved. Please try again.");
       return;
     }
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   AboutApp,
+  DailyBriefApp,
   ExperienceApp,
   LeaderboardApp,
   NotesApp,
@@ -80,6 +81,8 @@ export default function Desktop() {
         return <SkillsApp />;
       case "leaderboard":
         return <LeaderboardApp />;
+      case "daily-brief":
+        return <DailyBriefApp />;
       case "photos":
         return <PhotosApp />;
       case "terminal":
@@ -157,13 +160,6 @@ export default function Desktop() {
             <span>{app.glyph}</span>
           </button>
         ))}
-        <button
-          className="dockIcon grid"
-          onClick={() => openApp("projects")}
-          aria-label="Show projects"
-        >
-          <span>⠿</span>
-        </button>
       </nav>
     </main>
   );
