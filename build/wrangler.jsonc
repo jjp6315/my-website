@@ -1,22 +1,25 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "parkjiwoong",
-  "main": "./worker/index.ts",
-  "compatibility_date": "2026-05-15",
-  "compatibility_flags": ["nodejs_compat"],
-  "observability": {
-    "enabled": true
-  },
-  "routes": [
-    {
-      "pattern": "parkjiwoong.com",
-      "custom_domain": true
-    }
-  ],
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "migrations_dir": "drizzle"
-    }
-  ]
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "parkjiwoong",
+	"main": "./worker/index.ts",
+	"compatibility_date": "2026-05-15",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"observability": {
+		"enabled": true
+	},
+	"routes": [
+		{
+			"pattern": "parkjiwoong.com",
+			"custom_domain": true
+		}
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"migrations_dir": "drizzle",
+			"database_id": "62abfd0b-9411-48c4-8533-322b0217d576"
+		}
+	]
 }
