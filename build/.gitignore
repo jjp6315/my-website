@@ -20,6 +20,7 @@
 
 # misc
 **/.DS_Store
+.DS_Store
 *.pem
 
 # debug
@@ -38,6 +39,7 @@ yarn-error.log*
 
 /dist/
 /.wrangler/
+**/.wrangler/
 /outputs/
 /work/
 *.tsbuildinfo
