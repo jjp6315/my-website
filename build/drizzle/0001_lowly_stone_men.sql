@@ -1,0 +1,1 @@
+CREATE INDEX `idx_scores_score_created_at` ON `scores` (`score`,`created_at`);
