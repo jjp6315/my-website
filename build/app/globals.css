@@ -445,6 +445,9 @@ a {
     transform: translate(-50%, -50%);
     border-radius: 20px;
     overflow: hidden;
+    background: linear-gradient(145deg, #091632, #040b1e);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     animation: windowIn .42s cubic-bezier(.2, .85, .2, 1)
 }
 
