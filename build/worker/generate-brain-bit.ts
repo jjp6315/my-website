@@ -1,15 +1,15 @@
-import { DAILY_STORY_PROMPT } from "./story-prompt";
+import { BRAIN_BIT_PROMPT } from "./brain-bit-prompt";
 
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const DEFAULT_MODEL = "gpt-5.6-luna";
 
-type StoryBindings = {
+type BrainBitBindings = {
   DB: D1Database;
   OPENAI_API_KEY?: string;
-  OPENAI_STORY_MODEL?: string;
+  OPENAI_BRAIN_BITS_MODEL?: string;
 };
 
-type GeneratedStory = {
+type GeneratedBrainBit = {
   section: string;
   title: string;
   introduction: string;
@@ -24,27 +24,27 @@ type ResponsesPayload = {
   }>;
 };
 
-export async function generateDailyStory(
-  env: StoryBindings,
+export async function generateBrainBit(
+  env: BrainBitBindings,
   scheduledTime = Date.now(),
-): Promise<{ created: boolean; storyDate: string }> {
+): Promise<{ created: boolean; bitDate: string }> {
   if (!env.OPENAI_API_KEY) {
     throw new Error("OPENAI_API_KEY is not configured");
   }
 
-  const storyDate = new Date(scheduledTime).toISOString().slice(0, 10);
+  const bitDate = new Date(scheduledTime).toISOString().slice(0, 10);
   const existing = await env.DB.prepare(
-    "SELECT id FROM daily_stories WHERE story_date = ? LIMIT 1",
+    "SELECT id FROM brain_bits WHERE bit_date = ? LIMIT 1",
   )
-    .bind(storyDate)
+    .bind(bitDate)
     .first();
 
   // Cron deliveries can be retried. This check makes generation idempotent so
   // one date cannot accidentally create multiple API charges or duplicate rows.
-  if (existing) return { created: false, storyDate };
+  if (existing) return { created: false, bitDate };
 
-  const model = env.OPENAI_STORY_MODEL || DEFAULT_MODEL;
-  console.log("Daily story generation started", { storyDate, model });
+  const model = env.OPENAI_BRAIN_BITS_MODEL || DEFAULT_MODEL;
+  console.log("Brain Bit generation started", { bitDate, model });
   const response = await fetch(OPENAI_RESPONSES_URL, {
     method: "POST",
     headers: {
@@ -57,14 +57,14 @@ export async function generateDailyStory(
       input: [
         {
           role: "developer",
-          content: [{ type: "input_text", text: DAILY_STORY_PROMPT }],
+          content: [{ type: "input_text", text: BRAIN_BIT_PROMPT }],
         },
         {
           role: "user",
           content: [
             {
               type: "input_text",
-              text: `Write the daily edition for ${storyDate}. Return only the requested structured result.`,
+              text: `Write the Brain Bit for ${bitDate}. Return only the requested structured result.`,
             },
           ],
         },
@@ -72,7 +72,7 @@ export async function generateDailyStory(
       text: {
         format: {
           type: "json_schema",
-          name: "daily_story",
+          name: "brain_bit",
           strict: true,
           schema: {
             type: "object",
@@ -108,43 +108,43 @@ export async function generateDailyStory(
     ?.find((item) => item.type === "message")
     ?.content?.find((item) => item.type === "output_text")?.text;
 
-  if (!outputText) throw new Error("OpenAI returned no story text");
+  if (!outputText) throw new Error("OpenAI returned no Brain Bit text");
 
-  const story = validateStory(JSON.parse(outputText) as unknown);
-  const wordCount = story.body.trim().split(/\s+/).length;
+  const brainBit = validateBrainBit(JSON.parse(outputText) as unknown);
+  const wordCount = brainBit.body.trim().split(/\s+/).length;
   const readingTime = `${Math.max(1, Math.ceil(wordCount / 220))} min read`;
   const publishedAt = new Date(scheduledTime).toISOString();
-  const edition = `Daily story · ${storyDate}`;
+  const edition = `Brain Bits · ${bitDate}`;
 
   await env.DB.prepare(
-    `INSERT INTO daily_stories (
-      story_date, edition, section, title, introduction, body,
+    `INSERT INTO brain_bits (
+      bit_date, edition, section, title, introduction, body,
       closing_prompt, reading_time, model, source_prompt, published_at
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(story_date) DO NOTHING`,
+    ON CONFLICT(bit_date) DO NOTHING`,
   )
     .bind(
-      storyDate,
+      bitDate,
       edition,
-      story.section,
-      story.title,
-      story.introduction,
-      story.body,
-      story.closingPrompt,
+      brainBit.section,
+      brainBit.title,
+      brainBit.introduction,
+      brainBit.body,
+      brainBit.closingPrompt,
       readingTime,
       model,
-      DAILY_STORY_PROMPT,
+      BRAIN_BIT_PROMPT,
       publishedAt,
     )
     .run();
 
-  console.log("Daily story saved", { storyDate, model });
-  return { created: true, storyDate };
+  console.log("Brain Bit saved", { bitDate, model });
+  return { created: true, bitDate };
 }
 
-function validateStory(value: unknown): GeneratedStory {
+function validateBrainBit(value: unknown): GeneratedBrainBit {
   if (!value || typeof value !== "object") {
-    throw new Error("OpenAI returned an invalid story object");
+    throw new Error("OpenAI returned an invalid Brain Bit object");
   }
 
   const record = value as Record<string, unknown>;

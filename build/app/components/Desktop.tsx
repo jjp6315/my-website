@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   AboutApp,
-  DailyBriefApp,
+  BrainBitsApp,
   ExperienceApp,
   LeaderboardApp,
   NotesApp,
@@ -14,6 +14,7 @@ import {
   TerminalApp,
 } from "./apps";
 import AppIcon from "./desktop/AppIcon";
+import DynamicSky from "./desktop/DynamicSky";
 import SystemMonitor from "./desktop/SystemMonitor";
 import {
   allApps,
@@ -60,6 +61,11 @@ export default function Desktop() {
   }, []);
 
   function openApp(id: AppId) {
+    if (id === "leaderboard") {
+      window.location.assign("/golf");
+      return;
+    }
+
     setActive(id);
     window.history.pushState({ app: id }, "", `#${id}`);
   }
@@ -81,8 +87,8 @@ export default function Desktop() {
         return <SkillsApp />;
       case "leaderboard":
         return <LeaderboardApp />;
-      case "daily-brief":
-        return <DailyBriefApp />;
+      case "brain-bits":
+        return <BrainBitsApp />;
       case "photos":
         return <PhotosApp />;
       case "terminal":
@@ -97,6 +103,7 @@ export default function Desktop() {
   return (
     <main className="desktop">
       <div className="spaceGlow" aria-hidden="true" />
+      <DynamicSky />
 
       <header className="menuBar">
         <nav aria-label="Desktop menu">
@@ -121,6 +128,10 @@ export default function Desktop() {
           </time>
         </div>
       </header>
+
+      <section className="mobileAppGrid" aria-label="Applications">
+        {allApps.map((app) => <AppIcon app={app} key={app.id} onOpen={openApp} />)}
+      </section>
 
       <section className="iconColumn leftIcons" aria-label="Portfolio applications">
         {desktopApps.map((app) => <AppIcon app={app} key={app.id} onOpen={openApp} />)}

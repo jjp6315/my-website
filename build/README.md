@@ -15,8 +15,10 @@ A recruiter-friendly portfolio that also leaves room for photographs, small game
 ```text
 app/
   api/scores/route.ts      # server endpoint for the live leaderboard
-  api/daily-brief/         # reads stories and updates the private archive
+  api/brain-bits/          # reads Brain Bits and updates the shared archive
+  api/golf/route.ts        # reads and upserts per-hole tournament scores
   components/              # interactive pieces used by pages
+  golf/                    # tournament pages, components, roster, and styles
   globals.css              # shared design system and responsive styles
   layout.tsx               # metadata, fonts, shared page shell
   page.tsx                 # home page composition and content
@@ -27,8 +29,8 @@ drizzle/                   # generated, versioned database migrations
 public/                    # optimized web images, resume, icons
 worker/
   index.ts                 # Cloudflare request and scheduled-event entry point
-  generate-daily-story.ts  # calls OpenAI and saves a story to D1
-  story-prompt.ts          # the creative prompt you can edit
+  generate-brain-bit.ts    # calls OpenAI and saves a Brain Bit to D1
+  brain-bit-prompt.ts      # the creative prompt you can edit
 wrangler.jsonc             # Worker, custom domain, and D1 configuration
 ```
 
@@ -43,7 +45,9 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed in the terminal. Before publishing, run `npm run build`.
+`npm run dev` first applies any pending migrations to the local D1 database,
+then starts the development server. Open the local URL printed in the terminal.
+Before publishing, run `npm run build`.
 
 ## Make it yours
 
@@ -61,12 +65,37 @@ For photographs, export display versions around 1600–2400 px wide as WebP or A
 
 The current score endpoint validates input and stores the top scores, but a public production leaderboard should also use server-side rate limits, bot protection, and—if scores matter—game-specific verification.
 
-## Daily story job
+## Golf tournament
 
-The Daily Brief uses the same Cloudflare Worker and D1 database as the rest of
-the site. A Cron Trigger runs at `12:00 UTC` every day, calls the OpenAI
-Responses API, and inserts one story into `daily_stories`. The date column is
-unique, so a completed date is skipped and cannot create a duplicate edition.
+Opening **Golf Tournament** from the desktop now navigates to `/golf`. The
+tournament has four routes:
+
+- `/golf` — event home and course overview
+- `/golf/players` — player photos, handicaps, groups, and tee times
+- `/golf/leaderboard` — overall or per-course standings and stats
+- `/golf/scorecard` — shared hole-by-hole score entry
+
+Edit the roster, tee times, and two par arrays in `app/golf/data.ts`. To use
+real player photos, place optimized WebP or JPEG images in
+`public/golf/players/` and set each player object's `photo` to a public path,
+for example `photo: "/golf/players/john.webp"`.
+
+Each score is stored in D1 using the player, course, and hole as a unique key.
+Saving an existing hole updates it. The scorecard records score, fairway hit,
+green in regulation, putts, penalties, and bunkers. Apply the migration locally
+with `npm run db:migrate:local`; `npm run release` applies it to the remote D1
+database before deploying the site.
+
+Score entry is intentionally shared for this first private-tournament version.
+If the URL will be public, add player sign-in or per-player PINs before treating
+the scores as authoritative.
+
+## Brain Bits job
+
+Brain Bits uses the same Cloudflare Worker and D1 database as the rest of the
+site. A Cron Trigger runs at `12:00 UTC` every day, calls the OpenAI Responses
+API, and inserts one item into `brain_bits`. The date column is unique, so a
+completed date is skipped and cannot create a duplicate edition.
 
 The API key and manual-generation owner token are Worker secrets. Set them once before
 deploying; never put their actual values in `wrangler.jsonc` or commit them:
@@ -80,13 +109,13 @@ npm run release
 
 Paste the random value printed by `openssl` when Wrangler asks for
 `STORY_ADMIN_TOKEN`, and keep a copy in a password manager. It protects only
-the manual story-generation endpoint. Anyone can heart a story without a token;
+the manual Brain Bits generation endpoint. Anyone can heart an item without a token;
 the change is written to D1 and appears in the shared archive for every visitor.
-The button changes to `Unsave`, which removes the story from the shared archive.
+The button changes to `Unsave`, which removes it from the shared archive.
 
-To change what gets written, edit `worker/story-prompt.ts`. The model is set by
-`OPENAI_STORY_MODEL` in `wrangler.jsonc`. The checked-in migration creates the
-story table, and `npm run release` applies database migrations before deploying
+To change what gets written, edit `worker/brain-bit-prompt.ts`. The model is set
+by `OPENAI_BRAIN_BITS_MODEL` in `wrangler.jsonc`. The checked-in migrations
+create and rename the Brain Bits table, and `npm run release` applies them before deploying
 code that uses them.
 
 For local development, copy `.dev.vars.example` to `.dev.vars`, enter test
@@ -110,18 +139,18 @@ keeps it out of the visible command:
 
 ```bash
 read -s STORY_TOKEN
-curl -X POST https://parkjiwoong.com/api/daily-brief \
+curl -X POST https://parkjiwoong.com/api/brain-bits \
   -H "Authorization: Bearer $STORY_TOKEN"
 unset STORY_TOKEN
 ```
 
 The request returns `202 Accepted` immediately while Cloudflare finishes the
-story in the background. Wait about a minute and refresh the Daily Brief. You
+Brain Bit in the background. Wait about a minute and refresh Brain Bits. You
 can also inspect the saved row directly:
 
 ```bash
 npx wrangler d1 execute DB --remote \
-  --command "SELECT id, story_date, title, published_at FROM daily_stories ORDER BY id DESC LIMIT 3"
+  --command "SELECT id, bit_date, title, published_at FROM brain_bits ORDER BY id DESC LIMIT 3"
 ```
 
 For generation diagnostics, leave this running in a second terminal before

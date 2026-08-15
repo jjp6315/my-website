@@ -10,7 +10,7 @@
 		"enabled": true
 	},
 	"vars": {
-		"OPENAI_STORY_MODEL": "gpt-5.6-luna"
+		"OPENAI_BRAIN_BITS_MODEL": "gpt-5.6-luna"
 	},
 	"triggers": {
 		"crons": [

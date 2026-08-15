@@ -1,4 +1,4 @@
-export async function isStoryOwner(
+export async function isBrainBitsOwner(
   request: Request,
   expectedToken?: string,
 ): Promise<boolean> {

@@ -4,13 +4,13 @@ import test from "node:test";
 
 const projectRoot = new URL("../", import.meta.url);
 
-async function render() {
+async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", {
+    new Request(`http://localhost${pathname}`, {
       headers: { accept: "text/html" },
     }),
     {
@@ -33,10 +33,29 @@ test("server-renders the desktop portfolio", async () => {
   const html = await response.text();
   assert.match(html, /<title>John(?:&apos;|&#x27;|')s OS<\/title>/i);
   assert.match(html, /class="desktop"/);
+  assert.match(html, /class="dynamicSky"/);
+  assert.match(html, /class="mobileAppGrid" aria-label="Applications"/);
   assert.match(html, /System Monitor/);
   assert.match(html, /aria-label="Application dock"/);
-  assert.match(html, /Open Daily Brief/);
+  assert.match(html, /Open Brain Bits/);
   assert.doesNotMatch(html, /codex-preview|_sites-preview/i);
+});
+
+test("server-renders every golf tournament page", async () => {
+  const pages = [
+    ["/golf", /Two courses/],
+    ["/golf/players", /Players &amp; tee times/],
+    ["/golf/leaderboard", /Live tournament/i],
+    ["/golf/scorecard", /Enter a score/],
+  ];
+
+  for (const [pathname, expected] of pages) {
+    const response = await render(pathname);
+    assert.equal(response.status, 200, pathname);
+    const html = await response.text();
+    assert.match(html, /PARK/);
+    assert.match(html, expected);
+  }
 });
 
 test("keeps the removed Sites integration out of the project", async () => {

@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from "react";
 import type {
-  DailyBriefResponse,
-  DailyStory,
-} from "../../content/dailyBrief";
+  BrainBitsResponse,
+  BrainBit,
+} from "../../content/brainBits";
 
 type BriefState =
   | { status: "loading" }
-  | { status: "ready"; current: DailyStory; favorites: DailyStory[] }
+  | { status: "ready"; current: BrainBit; favorites: BrainBit[] }
   | { status: "error" };
 
-export default function DailyBriefApp() {
+export default function BrainBitsApp() {
   const [state, setState] = useState<BriefState>({ status: "loading" });
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [message, setMessage] = useState("");
@@ -20,10 +20,10 @@ export default function DailyBriefApp() {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch("/api/daily-brief", { signal: controller.signal, cache: "no-store" })
+    fetch("/api/brain-bits", { signal: controller.signal, cache: "no-store" })
       .then((response) => {
-        if (!response.ok) throw new Error("Daily brief unavailable");
-        return response.json() as Promise<DailyBriefResponse>;
+        if (!response.ok) throw new Error("Brain Bits unavailable");
+        return response.json() as Promise<BrainBitsResponse>;
       })
       .then(({ current, favorites }) =>
         setState({ status: "ready", current, favorites }),
@@ -36,19 +36,19 @@ export default function DailyBriefApp() {
     return () => controller.abort();
   }, []);
 
-  const activeStory =
+  const activeBit =
     state.status === "ready"
-      ? state.favorites.find((story) => story.id === selectedId) ?? state.current
+      ? state.favorites.find((bit) => bit.id === selectedId) ?? state.current
       : null;
 
   if (state.status === "loading") {
-    return <div className="dailyBriefStatus">Preparing today’s edition…</div>;
+    return <div className="brainBitsStatus">Preparing today’s bit…</div>;
   }
 
-  if (state.status === "error" || !activeStory) {
+  if (state.status === "error" || !activeBit) {
     return (
-      <div className="dailyBriefStatus">
-        Today’s edition could not be loaded. Please try again shortly.
+      <div className="brainBitsStatus">
+        Today’s Brain Bit could not be loaded. Please try again shortly.
       </div>
     );
   }
@@ -58,35 +58,35 @@ export default function DailyBriefApp() {
     month: "long",
     day: "numeric",
     year: "numeric",
-  }).format(new Date(activeStory.publishedAt));
+  }).format(new Date(activeBit.publishedAt));
 
   async function toggleFavorite() {
     if (
       state.status !== "ready" ||
-      !activeStory?.id ||
+      !activeBit?.id ||
       saving
     ) return;
 
-    const nextFavoriteState = !activeStory.isFavorite;
+    const nextFavoriteState = !activeBit.isFavorite;
     setMessage("");
     setSaving(true);
 
     try {
-      const response = await fetch("/api/daily-brief", {
+      const response = await fetch("/api/brain-bits", {
         method: "PATCH",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          id: activeStory.id,
+          id: activeBit.id,
           isFavorite: nextFavoriteState,
         }),
       });
       const result = (await response.json()) as {
-        story?: DailyStory;
+        story?: BrainBit;
         error?: string;
       };
 
       if (!response.ok || !result.story) {
-        throw new Error(result.error || "The story could not be saved");
+        throw new Error(result.error || "The Brain Bit could not be saved");
       }
 
       const updated = result.story;
@@ -118,52 +118,52 @@ export default function DailyBriefApp() {
   }
 
   return (
-    <article className="dailyBriefApp">
+    <article className="brainBitsApp">
       <header className="briefMasthead">
         <button
           className="briefBrand"
           type="button"
           onClick={() => setSelectedId(null)}
-          aria-label="Read today's story"
+          aria-label="Read today's Brain Bit"
         >
-          <span className="briefEyebrow">The Daily Signal</span>
-          <span className="briefEdition">{activeStory.edition}</span>
+          <span className="briefEyebrow">Brain Bits</span>
+          <span className="briefEdition">{activeBit.edition}</span>
         </button>
-        <time dateTime={activeStory.publishedAt}>{publishedDate}</time>
+        <time dateTime={activeBit.publishedAt}>{publishedDate}</time>
       </header>
 
       <div className="briefToolbar">
-        <span>{activeStory.section} · {activeStory.readingTime}</span>
+        <span>{activeBit.section} · {activeBit.readingTime}</span>
         <button
-          className={activeStory.isFavorite ? "briefHeartButton isFavorite" : "briefHeartButton"}
+          className={activeBit.isFavorite ? "briefHeartButton isFavorite" : "briefHeartButton"}
           type="button"
           onClick={toggleFavorite}
-          disabled={!activeStory.id || saving}
-          title={!activeStory.id ? "Available after the first generated story" : undefined}
+          disabled={!activeBit.id || saving}
+          title={!activeBit.id ? "Available after the first generated Brain Bit" : undefined}
         >
-          <span aria-hidden="true">{activeStory.isFavorite ? "♥" : "♡"}</span>
+          <span aria-hidden="true">{activeBit.isFavorite ? "♥" : "♡"}</span>
           {saving
-            ? activeStory.isFavorite ? "Removing…" : "Saving…"
-            : activeStory.isFavorite ? "Unsave" : "Save story"}
+            ? activeBit.isFavorite ? "Removing…" : "Saving…"
+            : activeBit.isFavorite ? "Unsave" : "Save Brain Bit"}
         </button>
       </div>
       {message && <p className="briefMessage" role="status">{message}</p>}
 
       <section className="briefLead">
-        <p>Today’s story</p>
-        <h1>{activeStory.title}</h1>
-        <p>{activeStory.introduction}</p>
+        <p>Today’s Brain Bit</p>
+        <h1>{activeBit.title}</h1>
+        <p>{activeBit.introduction}</p>
       </section>
 
       <section className="briefStoryBody">
-        {activeStory.body.split(/\n\s*\n/).map((paragraph, index) => (
-          <p key={`${activeStory.id ?? "fallback"}-${index}`}>{paragraph}</p>
+        {activeBit.body.split(/\n\s*\n/).map((paragraph, index) => (
+          <p key={`${activeBit.id ?? "fallback"}-${index}`}>{paragraph}</p>
         ))}
       </section>
 
       <footer className="briefPrompt">
         <span>Question for today</span>
-        <p>{activeStory.closingPrompt}</p>
+        <p>{activeBit.closingPrompt}</p>
       </footer>
 
       <aside className="briefArchive" aria-label="Favorite story archive">
@@ -175,15 +175,15 @@ export default function DailyBriefApp() {
           <p className="briefArchiveEmpty">Heart a generated story to keep it here.</p>
         ) : (
           <div className="briefArchiveList">
-            {state.favorites.map((story) => (
+            {state.favorites.map((bit) => (
               <button
                 type="button"
-                key={story.id}
-                className={story.id === activeStory.id ? "isActive" : ""}
-                onClick={() => setSelectedId(story.id)}
+                key={bit.id}
+                className={bit.id === activeBit.id ? "isActive" : ""}
+                onClick={() => setSelectedId(bit.id)}
               >
-                <time dateTime={story.publishedAt}>{story.storyDate}</time>
-                <span>{story.title}</span>
+                <time dateTime={bit.publishedAt}>{bit.bitDate}</time>
+                <span>{bit.title}</span>
               </button>
             ))}
           </div>

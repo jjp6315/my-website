@@ -1,5 +1,5 @@
 export { default as AboutApp } from "./AboutApp";
-export { default as DailyBriefApp } from "./DailyBriefApp";
+export { default as BrainBitsApp } from "./BrainBitsApp";
 export { default as ExperienceApp } from "./ExperienceApp";
 export { default as LeaderboardApp } from "./LeaderboardApp";
 export { default as NotesApp } from "./NotesApp";

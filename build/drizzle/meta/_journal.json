@@ -29,6 +29,20 @@
       "when": 1786778700355,
       "tag": "0003_daily_stories",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1786811049518,
+      "tag": "0004_brain_bits",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1786812806903,
+      "tag": "0005_golf_hole_scores",
+      "breakpoints": true
     }
   ]
 }

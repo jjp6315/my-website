@@ -19,11 +19,11 @@ export const scores = sqliteTable(
   ],
 );
 
-export const dailyStories = sqliteTable(
-  "daily_stories",
+export const brainBits = sqliteTable(
+  "brain_bits",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
-    storyDate: text("story_date").notNull(),
+    bitDate: text("bit_date").notNull(),
     edition: text("edition").notNull(),
     section: text("section").notNull(),
     title: text("title").notNull(),
@@ -40,10 +40,42 @@ export const dailyStories = sqliteTable(
     createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
   },
   (table) => [
-    uniqueIndex("idx_daily_stories_story_date").on(table.storyDate),
-    index("idx_daily_stories_favorite_published_at").on(
+    uniqueIndex("idx_brain_bits_bit_date").on(table.bitDate),
+    index("idx_brain_bits_favorite_published_at").on(
       table.isFavorite,
       table.publishedAt,
+    ),
+  ],
+);
+
+export const golfHoleScores = sqliteTable(
+  "golf_hole_scores",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    playerId: text("player_id").notNull(),
+    courseId: text("course_id").notNull(),
+    hole: integer("hole").notNull(),
+    score: integer("score").notNull(),
+    fairwayHit: integer("fairway_hit", { mode: "boolean" })
+      .notNull()
+      .default(false),
+    greenInRegulation: integer("green_in_regulation", { mode: "boolean" })
+      .notNull()
+      .default(false),
+    putts: integer("putts").notNull().default(0),
+    penalties: integer("penalties").notNull().default(0),
+    bunkers: integer("bunkers").notNull().default(0),
+    updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  },
+  (table) => [
+    uniqueIndex("idx_golf_scores_player_course_hole").on(
+      table.playerId,
+      table.courseId,
+      table.hole,
+    ),
+    index("idx_golf_scores_course_player").on(
+      table.courseId,
+      table.playerId,
     ),
   ],
 );

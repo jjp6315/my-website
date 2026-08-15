@@ -4,7 +4,7 @@ export type AppId =
   | "experience"
   | "skills"
   | "leaderboard"
-  | "daily-brief"
+  | "brain-bits"
   | "photos"
   | "terminal"
   | "notes"
@@ -32,14 +32,14 @@ export const utilityApps: DesktopApp[] = [
   { id: "notes", label: "Notes.txt", glyph: "≡", tone: "paper" },
 ];
 
-export const dailyBriefApp: DesktopApp = {
-  id: "daily-brief",
-  label: "Daily Brief",
-  glyph: "☀",
+export const brainBitsApp: DesktopApp = {
+  id: "brain-bits",
+  label: "Brain Bits",
+  glyph: "◉",
   tone: "news",
 };
 
-export const allApps = [...desktopApps, ...utilityApps, dailyBriefApp];
+export const allApps = [...desktopApps, ...utilityApps, brainBitsApp];
 export const appIds = new Set<AppId>(allApps.map((app) => app.id));
 
 export const dockApps = [
@@ -50,5 +50,5 @@ export const dockApps = [
   desktopApps[4],
   utilityApps[2],
   utilityApps[3],
-  dailyBriefApp,
+  brainBitsApp,
 ];

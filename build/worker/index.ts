@@ -1,14 +1,14 @@
 /** Cloudflare Worker entry point for the vinext-starter template. */
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
-import { generateDailyStory } from "./generate-daily-story";
-import { isStoryOwner } from "./story-auth";
+import { generateBrainBit } from "./generate-brain-bit";
+import { isBrainBitsOwner } from "./brain-bit-auth";
 
 interface Env {
   ASSETS: Fetcher;
   DB: D1Database;
   OPENAI_API_KEY?: string;
-  OPENAI_STORY_MODEL?: string;
+  OPENAI_BRAIN_BITS_MODEL?: string;
   STORY_ADMIN_TOKEN?: string;
   IMAGES: {
     input(stream: ReadableStream): {
@@ -34,30 +34,30 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
-    if (url.pathname === "/api/daily-brief" && request.method === "POST") {
+    if (url.pathname === "/api/brain-bits" && request.method === "POST") {
       if (!env.STORY_ADMIN_TOKEN || !env.OPENAI_API_KEY) {
         return Response.json(
-          { error: "Story generation secrets are not configured" },
+          { error: "Brain Bits generation secrets are not configured" },
           { status: 503 },
         );
       }
 
-      if (!(await isStoryOwner(request, env.STORY_ADMIN_TOKEN))) {
+      if (!(await isBrainBitsOwner(request, env.STORY_ADMIN_TOKEN))) {
         return Response.json({ error: "Invalid owner token" }, { status: 401 });
       }
 
       ctx.waitUntil(
-        generateDailyStory(env)
-          .then((result) => console.log("Manual daily story job complete", result))
+        generateBrainBit(env)
+          .then((result) => console.log("Manual Brain Bits job complete", result))
           .catch((error: unknown) =>
-            console.error("Manual daily story job failed", error),
+            console.error("Manual Brain Bits job failed", error),
           ),
       );
 
       return Response.json(
         {
           accepted: true,
-          message: "Story generation is running in the background",
+          message: "Brain Bit generation is running in the background",
         },
         { status: 202 },
       );
@@ -83,10 +83,10 @@ const worker = {
     ctx: ExecutionContext,
   ): Promise<void> {
     ctx.waitUntil(
-      generateDailyStory(env, controller.scheduledTime)
-        .then((result) => console.log("Daily story job complete", result))
+      generateBrainBit(env, controller.scheduledTime)
+        .then((result) => console.log("Brain Bits job complete", result))
         .catch((error: unknown) => {
-          console.error("Daily story job failed", error);
+          console.error("Brain Bits job failed", error);
           throw error;
         }),
     );

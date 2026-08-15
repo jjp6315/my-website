@@ -1,13 +1,13 @@
 import { desc, eq } from "drizzle-orm";
 import { getDb } from "../../../db";
-import { dailyStories } from "../../../db/schema";
+import { brainBits } from "../../../db/schema";
 import {
-  fallbackDailyStory,
-  type DailyBriefResponse,
-  type DailyStory,
-} from "../../content/dailyBrief";
+  fallbackBrainBit,
+  type BrainBitsResponse,
+  type BrainBit,
+} from "../../content/brainBits";
 
-type StoryRow = typeof dailyStories.$inferSelect;
+type BrainBitRow = typeof brainBits.$inferSelect;
 
 export async function GET() {
   try {
@@ -15,29 +15,29 @@ export async function GET() {
     const [latest, favorites] = await Promise.all([
       db
         .select()
-        .from(dailyStories)
-        .orderBy(desc(dailyStories.publishedAt))
+        .from(brainBits)
+        .orderBy(desc(brainBits.publishedAt))
         .limit(1),
       db
         .select()
-        .from(dailyStories)
-        .where(eq(dailyStories.isFavorite, true))
-        .orderBy(desc(dailyStories.publishedAt))
+        .from(brainBits)
+        .where(eq(brainBits.isFavorite, true))
+        .orderBy(desc(brainBits.publishedAt))
         .limit(50),
     ]);
 
-    const response: DailyBriefResponse = {
-      current: latest[0] ? toDailyStory(latest[0]) : fallbackDailyStory,
-      favorites: favorites.map(toDailyStory),
+    const response: BrainBitsResponse = {
+      current: latest[0] ? toBrainBit(latest[0]) : fallbackBrainBit,
+      favorites: favorites.map(toBrainBit),
     };
 
     return Response.json(response, {
       headers: { "cache-control": "no-store" },
     });
   } catch (error) {
-    console.error("Unable to read daily stories", error);
+    console.error("Unable to read Brain Bits", error);
     return Response.json(
-      { current: fallbackDailyStory, favorites: [] } satisfies DailyBriefResponse,
+      { current: fallbackBrainBit, favorites: [] } satisfies BrainBitsResponse,
       { headers: { "cache-control": "no-store" } },
     );
   }
@@ -57,32 +57,32 @@ export async function PATCH(request: Request) {
     }
 
     const updated = await getDb()
-      .update(dailyStories)
+      .update(brainBits)
       .set({ isFavorite: payload.isFavorite })
-      .where(eq(dailyStories.id, payload.id as number))
+      .where(eq(brainBits.id, payload.id as number))
       .returning();
 
     if (!updated[0]) {
-      return Response.json({ error: "Story not found" }, { status: 404 });
+      return Response.json({ error: "Brain Bit not found" }, { status: 404 });
     }
 
     return Response.json(
-      { story: toDailyStory(updated[0]) },
+      { story: toBrainBit(updated[0]) },
       { headers: { "cache-control": "no-store" } },
     );
   } catch (error) {
-    console.error("Unable to update shared story archive", error);
+    console.error("Unable to update shared Brain Bits archive", error);
     return Response.json(
-      { error: "The story archive could not be updated" },
+      { error: "The Brain Bits archive could not be updated" },
       { status: 500 },
     );
   }
 }
 
-function toDailyStory(row: StoryRow): DailyStory {
+function toBrainBit(row: BrainBitRow): BrainBit {
   return {
     id: row.id,
-    storyDate: row.storyDate,
+    bitDate: row.bitDate,
     edition: row.edition,
     section: row.section,
     title: row.title,
