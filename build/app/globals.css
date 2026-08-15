@@ -913,6 +913,17 @@ a {
     margin: 0
 }
 
+.briefBrand {
+    display: grid;
+    gap: 5px;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    background: transparent;
+    text-align: left;
+    cursor: pointer
+}
+
 .briefEyebrow {
     font-size: clamp(22px, 3vw, 34px);
     font-weight: 700;
@@ -936,6 +947,55 @@ a {
 .briefMasthead time {
     color: #666157;
     text-align: right
+}
+
+.briefToolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 14px 0;
+    border-bottom: 1px solid #bdb7aa;
+    color: #716b60;
+    font: 9px var(--font-geist-mono);
+    letter-spacing: .11em;
+    text-transform: uppercase
+}
+
+.briefHeartButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 11px;
+    border: 1px solid #8a431d;
+    border-radius: 999px;
+    color: #8a431d;
+    background: transparent;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer
+}
+
+.briefHeartButton span {
+    font-size: 15px;
+    line-height: 1
+}
+
+.briefHeartButton.isFavorite {
+    color: #f4f0e5;
+    background: #8a431d
+}
+
+.briefHeartButton:disabled {
+    cursor: not-allowed;
+    opacity: .45
+}
+
+.briefMessage {
+    margin: 10px 0 -8px;
+    color: #8a431d;
+    font: 10px var(--font-geist-mono)
 }
 
 .briefLead {
@@ -969,41 +1029,30 @@ a {
     line-height: 1.55
 }
 
-.briefStories {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border-bottom: 1px solid #bdb7aa
+.briefStoryBody {
+    max-width: 690px;
+    margin: 0 auto;
+    padding: 34px 0 18px;
+    columns: 2;
+    column-gap: 42px;
+    column-rule: 1px solid #d2ccbf
 }
 
-.briefStory {
-    padding: 26px 24px 30px 0
-}
-
-.briefStory+.briefStory {
-    padding-left: 24px;
-    border-left: 1px solid #bdb7aa
-}
-
-.briefStoryMeta {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    color: #8a431d
-}
-
-.briefStory h2 {
-    margin: 22px 0 12px;
-    font-size: 24px;
-    line-height: 1.04;
-    letter-spacing: -.025em
-}
-
-.briefStory p {
-    margin: 0;
+.briefStoryBody p {
+    margin: 0 0 1.15em;
     color: #5f5b52;
-    font-size: 14px;
-    line-height: 1.55
+    font-size: 16px;
+    line-height: 1.65;
+    break-inside: avoid
+}
+
+.briefStoryBody p:first-child::first-letter {
+    float: left;
+    margin: 5px 7px 0 0;
+    color: #8a431d;
+    font-size: 54px;
+    font-weight: 700;
+    line-height: .72
 }
 
 .briefPrompt {
@@ -1022,6 +1071,66 @@ a {
     max-width: 570px;
     font-size: 24px;
     line-height: 1.25
+}
+
+.briefArchive {
+    margin-top: 34px;
+    padding-top: 20px;
+    border-top: 3px double #25231c
+}
+
+.briefArchiveHeading {
+    display: flex;
+    justify-content: space-between;
+    color: #8a431d;
+    font: 9px var(--font-geist-mono);
+    letter-spacing: .11em;
+    text-transform: uppercase
+}
+
+.briefArchiveEmpty {
+    margin: 18px 0 0;
+    color: #777166;
+    font-style: italic
+}
+
+.briefArchiveList {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 18px
+}
+
+.briefArchiveList button {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid #bdb7aa;
+    color: #29271f;
+    background: transparent;
+    text-align: left;
+    cursor: pointer
+}
+
+.briefArchiveList button:hover,
+.briefArchiveList button.isActive {
+    border-color: #8a431d;
+    background: rgba(138, 67, 29, .07)
+}
+
+.briefArchiveList time {
+    color: #8a431d;
+    font: 8px var(--font-geist-mono);
+    letter-spacing: .08em
+}
+
+.briefArchiveList span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 15px;
+    font-weight: 700
 }
 
 .notesApp {
@@ -1282,23 +1391,18 @@ a {
         grid-column: 1
     }
 
-    .briefStories {
-        grid-template-columns: 1fr
-    }
-
-    .briefStory {
-        padding: 24px 0
-    }
-
-    .briefStory+.briefStory {
-        padding-left: 0;
-        border-left: 0;
-        border-top: 1px solid #bdb7aa
+    .briefStoryBody {
+        columns: 1;
+        padding-top: 26px
     }
 
     .briefPrompt {
         grid-template-columns: 1fr;
         gap: 14px
+    }
+
+    .briefArchiveList {
+        grid-template-columns: 1fr
     }
 
     .notesApp {
