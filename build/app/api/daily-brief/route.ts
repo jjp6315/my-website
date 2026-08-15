@@ -1,8 +1,6 @@
-import { env } from "cloudflare:workers";
 import { desc, eq } from "drizzle-orm";
 import { getDb } from "../../../db";
 import { dailyStories } from "../../../db/schema";
-import { isStoryOwner } from "../../../worker/story-auth";
 import {
   fallbackDailyStory,
   type DailyBriefResponse,
@@ -15,7 +13,11 @@ export async function GET() {
   try {
     const db = getDb();
     const [latest, favorites] = await Promise.all([
-      db.select().from(dailyStories).orderBy(desc(dailyStories.publishedAt)).limit(1),
+      db
+        .select()
+        .from(dailyStories)
+        .orderBy(desc(dailyStories.publishedAt))
+        .limit(1),
       db
         .select()
         .from(dailyStories)
@@ -43,23 +45,18 @@ export async function GET() {
 
 export async function PATCH(request: Request) {
   try {
-    const authError = await requireOwner(request);
-    if (authError) return authError;
-
     const payload = (await request.json()) as {
       id?: number;
       isFavorite?: boolean;
     };
-
     if (!Number.isInteger(payload.id) || typeof payload.isFavorite !== "boolean") {
       return Response.json(
-        { error: "A story id and favorite state are required" },
+        { error: "A valid story id and favorite state are required" },
         { status: 400 },
       );
     }
 
-    const db = getDb();
-    const updated = await db
+    const updated = await getDb()
       .update(dailyStories)
       .set({ isFavorite: payload.isFavorite })
       .where(eq(dailyStories.id, payload.id as number))
@@ -74,27 +71,12 @@ export async function PATCH(request: Request) {
       { headers: { "cache-control": "no-store" } },
     );
   } catch (error) {
-    console.error("Unable to update daily story", error);
+    console.error("Unable to update shared story archive", error);
     return Response.json(
-      { error: "The story could not be updated" },
+      { error: "The story archive could not be updated" },
       { status: 500 },
     );
   }
-}
-
-async function requireOwner(request: Request): Promise<Response | null> {
-  if (!env.STORY_ADMIN_TOKEN) {
-    return Response.json(
-      { error: "Story admin access is not configured" },
-      { status: 503 },
-    );
-  }
-
-  if (!(await isStoryOwner(request, env.STORY_ADMIN_TOKEN))) {
-    return Response.json({ error: "Invalid owner token" }, { status: 401 });
-  }
-
-  return null;
 }
 
 function toDailyStory(row: StoryRow): DailyStory {

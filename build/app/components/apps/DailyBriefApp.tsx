@@ -11,8 +11,6 @@ type BriefState =
   | { status: "ready"; current: DailyStory; favorites: DailyStory[] }
   | { status: "error" };
 
-const TOKEN_STORAGE_KEY = "daily-story-owner-token";
-
 export default function DailyBriefApp() {
   const [state, setState] = useState<BriefState>({ status: "loading" });
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -63,27 +61,23 @@ export default function DailyBriefApp() {
   }).format(new Date(activeStory.publishedAt));
 
   async function toggleFavorite() {
-    if (state.status !== "ready" || !activeStory?.id || saving) return;
+    if (
+      state.status !== "ready" ||
+      !activeStory?.id ||
+      saving
+    ) return;
 
-    let token = sessionStorage.getItem(TOKEN_STORAGE_KEY) ?? "";
-    if (!token) {
-      token = window.prompt("Enter your story owner token:")?.trim() ?? "";
-    }
-    if (!token) return;
-
-    setSaving(true);
+    const nextFavoriteState = !activeStory.isFavorite;
     setMessage("");
+    setSaving(true);
 
     try {
       const response = await fetch("/api/daily-brief", {
         method: "PATCH",
-        headers: {
-          authorization: `Bearer ${token}`,
-          "content-type": "application/json",
-        },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({
           id: activeStory.id,
-          isFavorite: !activeStory.isFavorite,
+          isFavorite: nextFavoriteState,
         }),
       });
       const result = (await response.json()) as {
@@ -92,26 +86,30 @@ export default function DailyBriefApp() {
       };
 
       if (!response.ok || !result.story) {
-        if (response.status === 401) sessionStorage.removeItem(TOKEN_STORAGE_KEY);
         throw new Error(result.error || "The story could not be saved");
       }
 
-      sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
       const updated = result.story;
       setState((previous) => {
         if (previous.status !== "ready") return previous;
-        const favorites = updated.isFavorite
-          ? [updated, ...previous.favorites.filter((item) => item.id !== updated.id)]
-          : previous.favorites.filter((item) => item.id !== updated.id);
         return {
           status: "ready",
           current:
             previous.current.id === updated.id ? updated : previous.current,
-          favorites,
+          favorites: updated.isFavorite
+            ? [
+                updated,
+                ...previous.favorites.filter((item) => item.id !== updated.id),
+              ]
+            : previous.favorites.filter((item) => item.id !== updated.id),
         };
       });
       if (!updated.isFavorite) setSelectedId(null);
-      setMessage(updated.isFavorite ? "Saved to your archive." : "Removed from archive.");
+      setMessage(
+        updated.isFavorite
+          ? "Saved to the shared archive."
+          : "Removed from the shared archive.",
+      );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Something went wrong");
     } finally {
@@ -144,7 +142,9 @@ export default function DailyBriefApp() {
           title={!activeStory.id ? "Available after the first generated story" : undefined}
         >
           <span aria-hidden="true">{activeStory.isFavorite ? "♥" : "♡"}</span>
-          {saving ? "Saving…" : activeStory.isFavorite ? "Saved" : "Save story"}
+          {saving
+            ? activeStory.isFavorite ? "Removing…" : "Saving…"
+            : activeStory.isFavorite ? "Unsave" : "Save story"}
         </button>
       </div>
       {message && <p className="briefMessage" role="status">{message}</p>}

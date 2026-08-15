@@ -68,7 +68,7 @@ the site. A Cron Trigger runs at `12:00 UTC` every day, calls the OpenAI
 Responses API, and inserts one story into `daily_stories`. The date column is
 unique, so a completed date is skipped and cannot create a duplicate edition.
 
-The API key and archive owner token are Worker secrets. Set them once before
+The API key and manual-generation owner token are Worker secrets. Set them once before
 deploying; never put their actual values in `wrangler.jsonc` or commit them:
 
 ```bash
@@ -79,9 +79,10 @@ npm run release
 ```
 
 Paste the random value printed by `openssl` when Wrangler asks for
-`STORY_ADMIN_TOKEN`, and keep a copy in a password manager. The Daily Brief asks
-for this token the first time you heart a story in each browser tab. Visitors
-can read stories and the public favorite archive, but cannot change it.
+`STORY_ADMIN_TOKEN`, and keep a copy in a password manager. It protects only
+the manual story-generation endpoint. Anyone can heart a story without a token;
+the change is written to D1 and appears in the shared archive for every visitor.
+The button changes to `Unsave`, which removes the story from the shared archive.
 
 To change what gets written, edit `worker/story-prompt.ts`. The model is set by
 `OPENAI_STORY_MODEL` in `wrangler.jsonc`. The checked-in migration creates the
