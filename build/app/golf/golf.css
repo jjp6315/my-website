@@ -102,8 +102,7 @@ body:has(.golfSite) {
   color: #61645f;
 }
 
-.tickerAvatar,
-.leaderAvatar {
+.tickerAvatar {
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -140,10 +139,23 @@ body:has(.golfSite) {
 }
 
 .tickerPlayer>strong {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   color: #a2092d;
   font-family: Georgia, serif;
   font-size: 20px;
   font-weight: 500;
+}
+
+.tickerPlayer>strong small {
+  margin-top: 3px;
+  color: #747873;
+  font-family: Arial, sans-serif;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  white-space: nowrap;
 }
 
 .tickerPlayer>strong.underPar,
@@ -925,17 +937,39 @@ body:has(.golfSite) {
   font-size: 22px;
 }
 
-.leaderAvatar {
-  width: 34px;
-  height: 34px;
-  display: inline-grid;
-  margin-right: 11px;
-  font-family: Arial, sans-serif;
-  font-size: 9px;
-  vertical-align: middle;
+.leaderTable tbody>tr>td:nth-child(3)>b,
+.leaderTable tbody>tr>td:nth-child(3)>small {
+  display: block;
 }
 
-.leaderTable .birdie {
+.leaderTable tbody>tr>td:nth-child(3)>small,
+.grossHoleScore {
+  margin-top: 3px;
+  color: #747873;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.grossHoleScore {
+  display: block;
+}
+
+.leaderTable .leaderSubtotal {
+  min-width: 66px;
+  background: #f1f2ed;
+  border-left: 2px solid var(--golf-dark);
+  font-family: Georgia, serif;
+}
+
+.leaderTable td.leaderSubtotal>b {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.leaderTable .birdie,
+.leaderTable .eagle {
   display: inline-grid;
   width: 28px;
   height: 28px;
@@ -945,13 +979,24 @@ body:has(.golfSite) {
   color: #b2082e;
 }
 
-.leaderTable .bogey {
+.leaderTable .eagle {
+  outline: 2px solid #b2082e;
+  outline-offset: 2px;
+}
+
+.leaderTable .bogey,
+.leaderTable .doubleBogey {
   display: inline-grid;
   width: 28px;
   height: 28px;
   place-items: center;
-  outline: 1px solid #365e4f;
+  border: 1px solid #365e4f;
   color: #365e4f;
+}
+
+.leaderTable .doubleBogey {
+  outline: 1px solid #365e4f;
+  outline-offset: 3px;
 }
 
 .statGrid {

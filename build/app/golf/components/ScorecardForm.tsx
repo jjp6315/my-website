@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { golfCourses, golfPlayers } from "../data";
+import { handicapStrokesForHole } from "../standings";
 import type { GolfHoleScore, GolfScoresResponse } from "../types";
 
 type FormState = {
@@ -25,6 +26,9 @@ export default function ScorecardForm() {
   const [saving, setSaving] = useState(false);
 
   const course = golfCourses.find((item) => item.id === courseId) ?? golfCourses[0];
+  const player = golfPlayers.find((item) => item.id === playerId) ?? golfPlayers[0];
+  const handicapStrokes = handicapStrokesForHole(player.handicapStrokes, course.strokeIndexes[hole - 1]);
+  const netScore = form.score - handicapStrokes;
   const selectedScore = useMemo(
     () => scores.find((score) => score.playerId === playerId && score.courseId === courseId && score.hole === hole),
     [courseId, hole, playerId, scores],
@@ -99,8 +103,8 @@ export default function ScorecardForm() {
   }
 
   const playerCourseScores = scores.filter((score) => score.playerId === playerId && score.courseId === courseId);
-  const frontTotal = totalForRange(playerCourseScores, 1, 9);
-  const backTotal = totalForRange(playerCourseScores, 10, 18);
+  const frontTotal = totalForRange(playerCourseScores, 1, 9, player.handicapStrokes, course.strokeIndexes);
+  const backTotal = totalForRange(playerCourseScores, 10, 18, player.handicapStrokes, course.strokeIndexes);
 
   return (
     <div className="scorecardLayout">
@@ -109,7 +113,7 @@ export default function ScorecardForm() {
         <label>Player<select value={playerId} onChange={(event) => choosePlayer(event.target.value)}>{golfPlayers.map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select></label>
         <label>Course<select value={courseId} onChange={(event) => chooseCourse(event.target.value)}>{golfCourses.map((item) => <option value={item.id} key={item.id}>{item.round} · {item.name}</option>)}</select></label>
         <div className="roundProgress"><span><b>{playerCourseScores.length}</b> / 18 holes</span><div><i style={{ width: `${(playerCourseScores.length / 18) * 100}%` }} /></div></div>
-        <dl><div><dt>Front nine</dt><dd>{frontTotal ?? "—"}</dd></div><div><dt>Back nine</dt><dd>{backTotal ?? "—"}</dd></div><div><dt>Round total</dt><dd>{frontTotal !== null || backTotal !== null ? (frontTotal ?? 0) + (backTotal ?? 0) : "—"}</dd></div></dl>
+        <dl><div><dt>Playing handicap</dt><dd>{player.handicapStrokes}</dd></div><div><dt>Front nine · net (gross)</dt><dd>{formatTotals(frontTotal)}</dd></div><div><dt>Back nine · net (gross)</dt><dd>{formatTotals(backTotal)}</dd></div><div><dt>Round · net (gross)</dt><dd>{formatCombinedTotals(frontTotal, backTotal)}</dd></div></dl>
       </aside>
 
       <section className="scoreEntry">
@@ -123,7 +127,7 @@ export default function ScorecardForm() {
 
         <form onSubmit={saveScore} className="holeForm">
           <header><div><p>{course.name.toUpperCase()}</p><h2>Hole {hole}</h2></div><span>PAR <b>{course.pars[hole - 1]}</b></span></header>
-          <div className="scoreStepper"><span>Score</span><button type="button" onClick={() => setForm((current) => ({ ...current, score: Math.max(1, current.score - 1) }))} aria-label="Decrease score">−</button><strong>{form.score}</strong><button type="button" onClick={() => setForm((current) => ({ ...current, score: Math.min(15, current.score + 1) }))} aria-label="Increase score">+</button><em>{scoreLabel(form.score - course.pars[hole - 1])}</em></div>
+          <div className="scoreStepper"><span>Gross score</span><button type="button" onClick={() => setForm((current) => ({ ...current, score: Math.max(1, current.score - 1) }))} aria-label="Decrease score">−</button><strong>{form.score}</strong><button type="button" onClick={() => setForm((current) => ({ ...current, score: Math.min(15, current.score + 1) }))} aria-label="Increase score">+</button><em>NET {netScore} · {scoreLabel(netScore - course.pars[hole - 1])}{handicapStrokes > 0 ? ` · −${handicapStrokes}` : ""}</em></div>
 
           <fieldset className="statChecks"><legend>Accuracy</legend><label className={form.fairwayHit ? "checked" : ""}><input type="checkbox" checked={form.fairwayHit} onChange={(event) => setForm((current) => ({ ...current, fairwayHit: event.target.checked }))} /><span>Fairway hit</span><small>Drive finished in fairway</small></label><label className={form.greenInRegulation ? "checked" : ""}><input type="checkbox" checked={form.greenInRegulation} onChange={(event) => setForm((current) => ({ ...current, greenInRegulation: event.target.checked }))} /><span>Green in regulation</span><small>Reached green at least two under par</small></label></fieldset>
 
@@ -140,9 +144,23 @@ function NumberStat({ label, value, setValue }: { label: string; value: number; 
   return <label><span>{label}</span><button type="button" onClick={() => setValue(Math.max(0, value - 1))}>−</button><b>{value}</b><button type="button" onClick={() => setValue(Math.min(10, value + 1))}>+</button></label>;
 }
 
-function totalForRange(scores: GolfHoleScore[], start: number, end: number) {
+type ScoreTotals = { gross: number; net: number };
+
+function totalForRange(scores: GolfHoleScore[], start: number, end: number, playingHandicap: number, strokeIndexes: readonly number[]): ScoreTotals | null {
   const relevant = scores.filter((score) => score.hole >= start && score.hole <= end);
-  return relevant.length ? relevant.reduce((total, score) => total + score.score, 0) : null;
+  if (!relevant.length) return null;
+  const gross = relevant.reduce((total, score) => total + score.score, 0);
+  const strokes = relevant.reduce((total, score) => total + handicapStrokesForHole(playingHandicap, strokeIndexes[score.hole - 1]), 0);
+  return { gross, net: gross - strokes };
+}
+
+function formatTotals(totals: ScoreTotals | null) {
+  return totals ? `${totals.net} (${totals.gross})` : "—";
+}
+
+function formatCombinedTotals(front: ScoreTotals | null, back: ScoreTotals | null) {
+  if (!front && !back) return "—";
+  return `${(front?.net ?? 0) + (back?.net ?? 0)} (${(front?.gross ?? 0) + (back?.gross ?? 0)})`;
 }
 
 function scoreLabel(relative: number) {

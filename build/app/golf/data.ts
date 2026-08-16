@@ -8,6 +8,7 @@ export type GolfPlayer = {
     countryName: string;
   };
   handicap: string;
+  handicapStrokes: number;
   teeTime: string;
   group: string;
   photo?: string;
@@ -20,6 +21,8 @@ export type GolfCourse = {
   round: string;
   description: string;
   pars: readonly number[];
+  strokeIndexes: readonly number[];
+  teeTimes?: readonly string[];
 };
 
 export const golfPlayers: readonly GolfPlayer[] = [
@@ -30,7 +33,8 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Boston, MA",
     nationality: { countryCode: "KR", countryName: "South Korea" },
     handicap: "18",
-    teeTime: "8:10 AM",
+    handicapStrokes: 18,
+    teeTime: "2:00 PM",
     group: "Group 1",
     photo: "/golf/john-park.webp",
   },
@@ -41,7 +45,8 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Baltimore, MD",
     nationality: { countryCode: "US", countryName: "United States" },
     handicap: "14.1",
-    teeTime: "8:10 AM",
+    handicapStrokes: 14,
+    teeTime: "2:00 PM",
     group: "Group 1",
     photo: "/golf/matty-scoffone.webp",
   },
@@ -52,7 +57,8 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Penn Oaks, PA",
     nationality: { countryCode: "IT", countryName: "Italy" },
     handicap: "10.8",
-    teeTime: "8:20 AM",
+    handicapStrokes: 11,
+    teeTime: "2:00 PM",
     group: "Group 2",
     photo: "/golf/andrew-distefano.webp",
   },
@@ -63,7 +69,8 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Philadelphia, PA",
     nationality: { countryCode: "US", countryName: "United States" },
     handicap: "16.0",
-    teeTime: "8:20 AM",
+    handicapStrokes: 16,
+    teeTime: "2:00 PM",
     group: "Group 2",
     photo: "/golf/jack-szymanski.webp",
   },
@@ -74,7 +81,8 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "West Chester, PA",
     nationality: { countryCode: "US", countryName: "United States" },
     handicap: "16.0",
-    teeTime: "8:20 AM",
+    handicapStrokes: 16,
+    teeTime: "2:00 PM",
     group: "Group 2",
     photo: "/golf/matt-bosch.webp",
   },
@@ -85,8 +93,9 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Philadelphia, PA",
     nationality: { countryCode: "IN", countryName: "India" },
     handicap: "16.0",
-    teeTime: "8:20 AM",
-    group: "Group 2",
+    handicapStrokes: 16,
+    teeTime: "2:00 PM",
+    group: "Group 1",
     photo: "/golf/arjun-chaudhary.webp",
   },
   {
@@ -96,8 +105,9 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Pittsburgh, PA",
     nationality: { countryCode: "IL", countryName: "Israel" },
     handicap: "16.0",
-    teeTime: "8:20 AM",
-    group: "Group 2",
+    handicapStrokes: 16,
+    teeTime: "2:00 PM",
+    group: "Group 1",
     photo: "/golf/josh-berkowitz.webp",
   },
   {
@@ -107,7 +117,8 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "West Chester, PA",
     nationality: { countryCode: "US", countryName: "United States" },
     handicap: "16.0",
-    teeTime: "8:20 AM",
+    handicapStrokes: 16,
+    teeTime: "2:00 PM",
     group: "Group 2",
     photo: "/golf/bobby-bosch.webp",
   },
@@ -120,7 +131,11 @@ export const golfCourses: readonly GolfCourse[] = [
     shortName: "Wyncote",
     round: "Round One",
     description: "A links course pushing golfers to their limits.",
-    pars: [4, 5, 4, 3, 4, 4, 3, 5, 4, 4, 4, 3, 5, 4, 5, 3, 4, 4],
+    pars: [5, 3, 4, 4, 4, 4, 3, 5, 4, 4, 4, 3, 5, 4, 5, 3, 4, 4],
+    strokeIndexes: [
+      8, 16, 12, 2, 10, 14, 6, 18, 4, 9, 1, 7, 3, 17, 13, 5, 11, 15,
+    ],
+    teeTimes: ["2:00 PM", "2:10 PM"],
   },
   {
     id: "downingtowncc",
@@ -130,6 +145,10 @@ export const golfCourses: readonly GolfCourse[] = [
     description:
       "Tree-lined fairways, strategic bunkers, and demanding par fives. Beautiful finish at the 18th green.",
     pars: [4, 4, 3, 5, 4, 4, 5, 3, 4, 4, 5, 3, 4, 4, 3, 5, 4, 4],
+    strokeIndexes: [
+      11, 5, 17, 15, 9, 1, 3, 7, 13, 14, 2, 16, 6, 10, 18, 4, 12, 8,
+    ],
+    teeTimes: ["9:00 AM", "2:10 PM"],
   },
 ];
 

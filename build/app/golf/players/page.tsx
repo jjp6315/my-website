@@ -15,7 +15,7 @@ export default function PlayersPage() {
           <div key={course.id}>
             <span>{course.round}</span>
             <strong>{course.name}</strong>
-            <small>First tee · 8:10 AM</small>
+            <small>First tee · {course.teeTimes?.[0] || "TBD"}</small>
           </div>
         ))}
       </section>

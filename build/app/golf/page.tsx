@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { coursePar, golfCourses, golfPlayers } from "./data";
 
 export default function GolfHomePage() {
@@ -11,8 +10,8 @@ export default function GolfHomePage() {
           <h1>Two courses.<br />One champion.</h1>
           <p>Annual golf tournament held in West Chester, PA. Golfers from around the nation come to compete.</p>
           <div className="golfHeroActions">
-            <Link className="golfButton golfButtonGold" href="/golf/leaderboard">View leaderboard</Link>
-            <Link className="golfButton golfButtonGhost" href="/golf/scorecard">Enter a score</Link>
+            <a className="golfButton golfButtonGold" href="/golf/leaderboard">View leaderboard</a>
+            <a className="golfButton golfButtonGhost" href="/golf/scorecard">Enter a score</a>
           </div>
         </div>
         <div className="golfHeroCard">
@@ -53,7 +52,7 @@ export default function GolfHomePage() {
 
       <section className="golfCallout golfSection">
         <div><p className="golfEyebrow">MEET THE FIELD</p><h2>Explore Players<br />and Previous Winner</h2></div>
-        <Link className="golfButton golfButtonGold" href="/golf/players">Players & tee times</Link>
+        <a className="golfButton golfButtonGold" href="/golf/players">Players & tee times</a>
       </section>
     </main>
   );

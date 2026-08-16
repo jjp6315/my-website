@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { buildStandings, formatThru, formatToPar } from "../standings";
 import type { GolfHoleScore, GolfScoresResponse } from "../types";
@@ -42,7 +41,10 @@ export default function ScoreTicker() {
             <span className="tickerPosition">{standing.position}</span>
             <span className="tickerAvatar">{standing.player.initials}</span>
             <span className="tickerIdentity"><b>{standing.player.name}</b><small>{formatThru(standing.holesPlayed)}</small></span>
-            <strong className={standing.relativeToPar < 0 ? "underPar" : ""}>{formatToPar(standing.relativeToPar, standing.holesPlayed)}</strong>
+            <strong className={standing.relativeToPar < 0 ? "underPar" : ""}>
+              {formatToPar(standing.relativeToPar, standing.holesPlayed)}
+              <small>GROSS {formatToPar(standing.grossRelativeToPar, standing.holesPlayed)}</small>
+            </strong>
           </div>
         ))}
       </div>
@@ -51,5 +53,5 @@ export default function ScoreTicker() {
 }
 
 function LinkToLeaderboard() {
-  return <Link className="tickerRound" href="/golf/leaderboard"><b>R2</b><span>LIVE</span></Link>;
+  return <a className="tickerRound" href="/golf/leaderboard"><b>R2</b><span>LIVE</span></a>;
 }
