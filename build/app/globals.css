@@ -167,8 +167,8 @@ a {
 }
 
 .appGlyph {
-    width: 58px;
-    height: 58px;
+    width: 55px;
+    height: 55px;
     display: grid;
     place-items: center;
     border-radius: 14px;
@@ -191,8 +191,7 @@ a {
 }
 
 .appGlyph.green {
-    background: linear-gradient(#6ee66a, #15913c);
-    border-radius: 50%
+    background: linear-gradient(#6ee66a, #15913c)
 }
 
 .appGlyph.violet {
@@ -200,7 +199,12 @@ a {
 }
 
 .appGlyph.photo {
-    background: linear-gradient(155deg, #55bbff 0 50%, #238d5d 51% 70%, #194d94 71%)
+    background: linear-gradient(145deg, #ffb36b, #f06f8f 48%, #7756d8)
+}
+
+.appGlyph.news {
+    background: linear-gradient(145deg, #ffe27a, #f39a46 58%, #d45c3d);
+    color: #241407
 }
 
 .appGlyph.terminal {
@@ -394,8 +398,8 @@ a {
 
 .dockIcon {
     border: 1px solid rgba(255, 255, 255, .32);
-    width: 52px;
-    height: 52px;
+    width: 49px;
+    height: 49px;
     display: grid;
     place-items: center;
     border-radius: 13px;
@@ -436,7 +440,7 @@ a {
 }
 
 .dockIcon.photo {
-    background: linear-gradient(145deg, #44afff, #1e8d5a)
+    background: linear-gradient(145deg, #ffb36b, #f06f8f 48%, #7756d8)
 }
 
 .dockIcon.terminal {
@@ -1299,9 +1303,9 @@ a {
     }
 
     .mobileAppGrid .appGlyph {
-        width: 54px;
-        height: 54px;
-        flex: 0 0 54px;
+        width: 51px;
+        height: 51px;
+        flex: 0 0 51px;
         border-radius: 13px;
         font-size: 14px
     }
@@ -1359,7 +1363,7 @@ a {
 
     .dockIcon {
         width: 100%;
-        max-width: 52px;
+        max-width: 49px;
         min-width: 0;
         height: auto;
         aspect-ratio: 1;
