@@ -14,6 +14,7 @@ import {
   TerminalApp,
 } from "./apps";
 import AppIcon from "./desktop/AppIcon";
+import AppGlyph from "./desktop/AppGlyph";
 import DynamicSky from "./desktop/DynamicSky";
 import SystemMonitor from "./desktop/SystemMonitor";
 import {
@@ -169,7 +170,7 @@ export default function Desktop() {
             onClick={() => openApp(app.id)}
             aria-label={`Open ${app.label}`}
           >
-            <span>{app.glyph}</span>
+            <AppGlyph icon={app.icon} />
           </button>
         ))}
       </nav>
@@ -186,7 +187,7 @@ export default function Desktop() {
             onClick={() => openApp(app.id)}
             aria-label={`Open ${app.label}`}
           >
-            <span>{app.glyph}</span>
+            <AppGlyph icon={app.icon} />
           </button>
         ))}
       </nav>

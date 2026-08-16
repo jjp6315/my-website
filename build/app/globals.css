@@ -35,7 +35,7 @@ a {
     font-family: var(--font-geist-sans), Arial, sans-serif;
     overflow: hidden;
     background-color: #020614;
-    background-image: url("/desktop-wallpaper-minimal.webp");
+    background-image: url("/desktop-wallpaper.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat
@@ -396,6 +396,8 @@ a {
     border: 1px solid rgba(255, 255, 255, .32);
     width: 52px;
     height: 52px;
+    display: grid;
+    place-items: center;
     border-radius: 13px;
     color: #fff;
     cursor: pointer;
@@ -1505,4 +1507,19 @@ a {
     .appWindow {
         animation-duration: .01ms
     }
+}
+
+.appGlyphImage {
+    width: 70%;
+    height: 70%;
+    display: block;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.appGlyphText {
+    display: grid;
+    place-items: center;
+    line-height: 1;
 }

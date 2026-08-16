@@ -13,24 +13,44 @@ export type AppId =
 export type DesktopApp = {
   id: AppId;
   label: string;
-  glyph: string;
+  icon: string;
   tone: string;
 };
 
 export const desktopApps: DesktopApp[] = [
-  { id: "about", label: "About Me", glyph: "●", tone: "blue" },
-  { id: "projects", label: "Projects", glyph: "</>", tone: "cyan" },
-  { id: "experience", label: "Experience", glyph: "▣", tone: "indigo" },
-  { id: "skills", label: "Skills", glyph: "✦", tone: "green" },
-  { id: "leaderboard", label: "Golf Tournament", glyph: "▥", tone: "violet" },
+  { id: "about", label: "About Me", icon: "/icon/profile.svg", tone: "blue" },
+  { id: "projects", label: "Projects", icon: "/icon/code.svg", tone: "cyan" },
+  {
+    id: "experience",
+    label: "Experience",
+    icon: "/icon/experience.svg",
+    tone: "indigo",
+  },
+  { id: "skills", label: "Skills", icon: "/icon/skills.svg", tone: "green" },
+  {
+    id: "leaderboard",
+    label: "Golf Tournament",
+    icon: "/icon/trophy.svg",
+    tone: "violet",
+  },
 ];
 
 export const utilityApps: DesktopApp[] = [
-  { id: "resume", label: "Resume.pdf", glyph: "PDF", tone: "pdf" },
-  { id: "terminal", label: "Terminal", glyph: ">_", tone: "terminal" },
-  { id: "photos", label: "Photos", glyph: "◒", tone: "photo" },
-  { id: "notes", label: "Notes.txt", glyph: "≡", tone: "paper" },
-  { id: "brain-bits", label: "Brain Bits", glyph: "◉", tone: "news" },
+  { id: "resume", label: "Resume.pdf", icon: "/icon/resume.svg", tone: "pdf" },
+  {
+    id: "terminal",
+    label: "Terminal",
+    icon: "/icon/terminal.svg",
+    tone: "terminal",
+  },
+  { id: "photos", label: "Photos", icon: "/icon/camera.svg", tone: "photo" },
+  { id: "notes", label: "Notes.txt", icon: "/icon/notes.svg", tone: "paper" },
+  {
+    id: "brain-bits",
+    label: "Brain Bits",
+    icon: "/icon/brain.svg",
+    tone: "news",
+  },
 ];
 
 export const allApps = [...desktopApps, ...utilityApps];
