@@ -25,9 +25,13 @@ export default function DynamicSky() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
-    if (!canvas || !context) return;
+    const currentCanvas = canvasRef.current;
+    const currentContext = currentCanvas?.getContext("2d");
+    if (!currentCanvas || !currentContext) return;
+
+    // Preserve the non-null narrowing inside animation and event callbacks.
+    const canvas = currentCanvas;
+    const context = currentContext;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const pointer = { x: -1000, y: -1000, active: false };

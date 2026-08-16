@@ -547,9 +547,9 @@ a {
 }
 
 .aboutGrid>p {
-    margin: 0;
+    margin: 10px 0;
     color: #b8c3d7;
-    line-height: 1.7;
+    line-height: 2;
     font-size: 16px
 }
 

@@ -54,7 +54,7 @@ test("server-renders every golf tournament page", async () => {
     const response = await render(pathname);
     assert.equal(response.status, 200, pathname);
     const html = await response.text();
-    assert.match(html, /PARK/);
+    assert.match(html, /The CUM CUP/);
     assert.match(html, expected);
   }
 });
@@ -63,7 +63,7 @@ test("keeps the removed Sites integration out of the project", async () => {
   const [packageJson, viteConfig, readme] = await Promise.all([
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../vite.config.ts", import.meta.url), "utf8"),
-    readFile(new URL("../README.md", import.meta.url), "utf8"),
+    readFile(new URL("../../README.md", import.meta.url), "utf8"),
   ]);
 
   assert.doesNotMatch(packageJson, /@openai\/sites-vite-plugin/);
@@ -72,6 +72,6 @@ test("keeps the removed Sites integration out of the project", async () => {
 
   await Promise.all([
     assert.rejects(access(new URL(".openai/hosting.json", projectRoot))),
-    assert.rejects(access(new URL("app/_sites-preview", projectRoot))),
+    assert.rejects(access(new URL("src/app/_sites-preview", projectRoot))),
   ]);
 });

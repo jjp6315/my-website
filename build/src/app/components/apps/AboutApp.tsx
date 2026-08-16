@@ -3,7 +3,7 @@ export default function AboutApp() {
     <div className="aboutApp appPane">
       <p className="appKicker">Hello</p>
       <h1>
-        I learn about the world with <em> technology</em>
+        I learn about the world through <em> technology</em>
       </h1>
       <div className="aboutGrid">
         <p>
