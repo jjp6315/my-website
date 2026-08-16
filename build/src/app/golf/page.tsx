@@ -50,6 +50,23 @@ export default function GolfHomePage() {
         </div>
       </section>
 
+      <section className="golfVideo golfSection" aria-labelledby="tournament-video-title">
+        <div className="sectionHeading">
+          <p className="golfEyebrow">LAST YEAR&apos;S TOURNAMENT</p>
+          <h2 id="tournament-video-title">Relive the Cup</h2>
+        </div>
+        <div className="golfVideoFrame">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/cs-IigySoBw"
+            title="Highlights from last year's CUM CUP tournament"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        </div>
+      </section>
+
       <section className="golfCallout golfSection">
         <div><p className="golfEyebrow">MEET THE FIELD</p><h2>Explore Players<br />and Previous Winner</h2></div>
         <a className="golfButton golfButtonGold" href="/golf/players">Players & tee times</a>

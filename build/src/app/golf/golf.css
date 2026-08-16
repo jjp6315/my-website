@@ -568,6 +568,28 @@ body:has(.golfSite) {
   letter-spacing: .12em;
 }
 
+.golfVideo {
+  padding: 0 0 120px;
+}
+
+.golfVideoFrame {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 16 / 9;
+  background: var(--golf-deep);
+  box-shadow: 0 24px 60px rgba(19, 43, 32, .16);
+}
+
+.golfVideoFrame iframe {
+  width: 75%;
+  height: 75%;
+  display: block;
+  border: 0;
+}
+
 .golfCallout {
   min-height: 350px;
   display: flex;
