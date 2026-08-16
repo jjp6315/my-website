@@ -15,9 +15,10 @@ type FormState = {
 };
 
 const emptyForm: FormState = { score: 4, fairwayHit: false, greenInRegulation: false, putts: 2, penalties: 0, bunkers: 0 };
+const PLAYER_SESSION_KEY = "golf:selected-player";
 
 export default function ScorecardForm() {
-  const [playerId, setPlayerId] = useState(golfPlayers[0].id);
+  const [playerId, setPlayerId] = useState("");
   const [courseId, setCourseId] = useState(golfCourses[0].id);
   const [hole, setHole] = useState(1);
   const [scores, setScores] = useState<GolfHoleScore[]>([]);
@@ -27,6 +28,7 @@ export default function ScorecardForm() {
 
   const course = golfCourses.find((item) => item.id === courseId) ?? golfCourses[0];
   const player = golfPlayers.find((item) => item.id === playerId) ?? golfPlayers[0];
+  const hasSelectedPlayer = golfPlayers.some((item) => item.id === playerId);
   const handicapStrokes = handicapStrokesForHole(player.handicapStrokes, course.strokeIndexes[hole - 1]);
   const netScore = form.score - handicapStrokes;
   const selectedScore = useMemo(
@@ -35,12 +37,18 @@ export default function ScorecardForm() {
   );
 
   useEffect(() => {
+    const savedPlayerId = window.sessionStorage.getItem(PLAYER_SESSION_KEY);
+    const restoredPlayerId = golfPlayers.some((player) => player.id === savedPlayerId)
+      ? savedPlayerId as string
+      : "";
+    window.queueMicrotask(() => setPlayerId(restoredPlayerId));
+
     fetch("/api/golf", { cache: "no-store" })
       .then((response) => response.ok ? response.json() as Promise<GolfScoresResponse> : null)
       .then((data) => {
         if (!data) return;
         setScores(data.scores);
-        applySelection(playerId, courseId, hole, data.scores);
+        applySelection(restoredPlayerId, courseId, hole, data.scores);
       })
       .catch(() => setStatus("Scores could not be loaded. Check your local D1 migration."));
     // The initial player, course, and hole are intentionally loaded once.
@@ -67,6 +75,7 @@ export default function ScorecardForm() {
 
   function choosePlayer(nextPlayerId: string) {
     setPlayerId(nextPlayerId);
+    window.sessionStorage.setItem(PLAYER_SESSION_KEY, nextPlayerId);
     applySelection(nextPlayerId, courseId, hole);
   }
 
@@ -82,6 +91,10 @@ export default function ScorecardForm() {
 
   async function saveScore(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!hasSelectedPlayer) {
+      setStatus("Choose your player before entering a score.");
+      return;
+    }
     setSaving(true);
     setStatus("");
     try {
@@ -110,7 +123,7 @@ export default function ScorecardForm() {
     <div className="scorecardLayout">
       <aside className="roundSetup">
         <p className="golfEyebrow">ROUND SETUP</p>
-        <label>Player<select value={playerId} onChange={(event) => choosePlayer(event.target.value)}>{golfPlayers.map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select></label>
+        <label>Player<select value={playerId} onChange={(event) => choosePlayer(event.target.value)}><option value="" disabled>Choose your player</option>{golfPlayers.map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select></label>
         <label>Course<select value={courseId} onChange={(event) => chooseCourse(event.target.value)}>{golfCourses.map((item) => <option value={item.id} key={item.id}>{item.round} · {item.name}</option>)}</select></label>
         <div className="roundProgress"><span><b>{playerCourseScores.length}</b> / 18 holes</span><div><i style={{ width: `${(playerCourseScores.length / 18) * 100}%` }} /></div></div>
         <dl><div><dt>Playing handicap</dt><dd>{player.handicapStrokes}</dd></div><div><dt>Front nine · net (gross)</dt><dd>{formatTotals(frontTotal)}</dd></div><div><dt>Back nine · net (gross)</dt><dd>{formatTotals(backTotal)}</dd></div><div><dt>Round · net (gross)</dt><dd>{formatCombinedTotals(frontTotal, backTotal)}</dd></div></dl>
@@ -133,7 +146,7 @@ export default function ScorecardForm() {
 
           <fieldset className="numberStats"><legend>Hole statistics</legend><NumberStat label="Putts" value={form.putts} setValue={(value) => setForm((current) => ({ ...current, putts: value }))} /><NumberStat label="Penalties" value={form.penalties} setValue={(value) => setForm((current) => ({ ...current, penalties: value }))} /><NumberStat label="Bunkers" value={form.bunkers} setValue={(value) => setForm((current) => ({ ...current, bunkers: value }))} /></fieldset>
 
-          <div className="scoreSubmit"><p className={status.includes("saved") || status.includes("updated") ? "success" : ""}>{status || (selectedScore ? "This hole already has a score. Saving will update it." : "All players can update this shared scorecard.")}</p><button className="golfButton golfButtonGreen" disabled={saving}>{saving ? "Saving…" : selectedScore ? "Update hole" : "Save hole"}</button></div>
+          <div className="scoreSubmit"><p className={status.includes("saved") || status.includes("updated") ? "success" : ""}>{status || (!hasSelectedPlayer ? "Choose your player to begin entering scores." : selectedScore ? "This hole already has a score. Saving will update it." : "All players can update this shared scorecard.")}</p><button className="golfButton golfButtonGreen" disabled={saving || !hasSelectedPlayer}>{saving ? "Saving…" : selectedScore ? "Update hole" : "Save hole"}</button></div>
         </form>
       </section>
     </div>

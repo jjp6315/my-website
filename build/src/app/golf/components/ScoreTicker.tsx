@@ -53,5 +53,5 @@ export default function ScoreTicker() {
 }
 
 function LinkToLeaderboard() {
-  return <a className="tickerRound" href="/golf/leaderboard"><b>R2</b><span>LIVE</span></a>;
+  return <a className="tickerRound" href="/golf/leaderboard"><b>R1</b><span></span></a>;
 }

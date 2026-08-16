@@ -131,9 +131,9 @@ export const golfCourses: readonly GolfCourse[] = [
     shortName: "Wyncote",
     round: "Round One",
     description: "A links course pushing golfers to their limits.",
-    pars: [5, 3, 4, 4, 4, 4, 3, 5, 4, 4, 4, 3, 5, 4, 5, 3, 4, 4],
+    pars: [5, 3, 4, 4, 4, 3, 4, 4, 5, 5, 4, 4, 4, 3, 4, 4, 3, 5],
     strokeIndexes: [
-      8, 16, 12, 2, 10, 14, 6, 18, 4, 9, 1, 7, 3, 17, 13, 5, 11, 15,
+      8, 16, 10, 4, 12, 18, 6, 14, 2, 9, 1, 5, 7, 15, 13, 3, 17, 11,
     ],
     teeTimes: ["2:00 PM", "2:10 PM"],
   },
@@ -144,11 +144,11 @@ export const golfCourses: readonly GolfCourse[] = [
     round: "Round Two",
     description:
       "Tree-lined fairways, strategic bunkers, and demanding par fives. Beautiful finish at the 18th green.",
-    pars: [4, 4, 3, 5, 4, 4, 5, 3, 4, 4, 5, 3, 4, 4, 3, 5, 4, 4],
+    pars: [4, 4, 3, 4, 4, 4, 4, 5, 4, 4, 4, 3, 5, 4, 3, 5, 3, 5],
     strokeIndexes: [
       11, 5, 17, 15, 9, 1, 3, 7, 13, 14, 2, 16, 6, 10, 18, 4, 12, 8,
     ],
-    teeTimes: ["9:00 AM", "2:10 PM"],
+    teeTimes: ["8:50 AM", "9:00 AM"],
   },
 ];
 
