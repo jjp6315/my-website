@@ -184,14 +184,55 @@ body:has(.golfSite) {
 }
 
 .golfBrandMark {
-  display: grid;
-  place-items: center;
+  position: relative;
+  display: inline-block;
   width: 40px;
   height: 31px;
   color: var(--golf-green);
+  flex: 0 0 40px;
+}
+
+.golfBrandMark::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 2px;
+  width: 2px;
+  height: 27px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.golfBrandMark::after {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 3px;
+  width: 22px;
+  height: 13px;
   background: var(--golf-gold);
-  clip-path: polygon(0 8%, 80% 8%, 72% 80%, 34% 70%, 20% 100%, 18% 66%, 0 60%);
-  font-size: 18px;
+  clip-path: polygon(0 0, 100% 14%, 78% 55%, 100% 100%, 0 86%);
+}
+
+.golfBrandMark>i {
+  position: absolute;
+  left: 3px;
+  bottom: 1px;
+  width: 17px;
+  height: 4px;
+  border: 1px solid color-mix(in srgb, currentColor 65%, transparent);
+  border-radius: 50%;
+  transform: skewX(-12deg);
+}
+
+.golfBrandMark>i::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: -25px;
+  width: 1px;
+  height: 24px;
+  background: color-mix(in srgb, white 45%, transparent);
 }
 
 .golfBrand>span:last-child {
@@ -684,6 +725,18 @@ body:has(.golfSite) {
   letter-spacing: .08em;
 }
 
+.playerMeta>span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.playerFlag {
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
 .playerMeta b {
   color: #a8aca7;
   font-family: Georgia, serif;
@@ -731,36 +784,6 @@ body:has(.golfSite) {
   color: var(--golf-dark);
   font-family: Georgia, serif;
   font-size: 17px;
-}
-
-.photoNote {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  margin-top: 35px;
-  padding: 22px 25px;
-  color: #536159;
-  background: #eef3ef;
-  border-left: 4px solid var(--golf-green);
-}
-
-.photoNote>span {
-  color: var(--golf-green);
-  font-size: 28px;
-}
-
-.photoNote strong {
-  display: block;
-  color: var(--golf-dark);
-}
-
-.photoNote p {
-  margin: 5px 0 0;
-  font-size: 13px;
-}
-
-.photoNote code {
-  color: var(--golf-green);
 }
 
 .leaderboardControls {

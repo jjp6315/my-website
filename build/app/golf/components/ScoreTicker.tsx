@@ -9,10 +9,26 @@ export default function ScoreTicker() {
   const [scores, setScores] = useState<GolfHoleScore[]>([]);
 
   useEffect(() => {
-    fetch("/api/golf", { cache: "no-store" })
-      .then((response) => response.ok ? response.json() as Promise<GolfScoresResponse> : null)
-      .then((data) => data && setScores(data.scores))
-      .catch(() => undefined);
+    let active = true;
+
+    function refreshScores() {
+      fetch("/api/golf", { cache: "no-store" })
+        .then((response) => response.ok ? response.json() as Promise<GolfScoresResponse> : null)
+        .then((data) => {
+          if (active && data) setScores(data.scores);
+        })
+        .catch(() => undefined);
+    }
+
+    refreshScores();
+    const refreshInterval = window.setInterval(refreshScores, 10_000);
+    window.addEventListener("golf:scores-updated", refreshScores);
+
+    return () => {
+      active = false;
+      window.clearInterval(refreshInterval);
+      window.removeEventListener("golf:scores-updated", refreshScores);
+    };
   }, []);
 
   const standings = buildStandings(scores);

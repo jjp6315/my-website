@@ -7,7 +7,7 @@ export default function PlayersPage() {
       <header className="golfPageHeader">
         <p className="golfEyebrow">THE FIELD</p>
         <h1>Players & tee times</h1>
-        <p>Meet this year&apos;s competitors and see when each group begins its round.</p>
+        <p>Returning 6 players and 2 amateurs fight for the cup.</p>
       </header>
 
       <section className="teeTimeBand" aria-label="Tournament tee time summary">
@@ -25,7 +25,15 @@ export default function PlayersPage() {
           <article className="playerCard" key={player.id}>
             <PlayerPortrait player={player} />
             <div className="playerCardBody">
-              <div className="playerMeta"><span>🇺🇸 UNITED STATES</span><b>0{index + 1}</b></div>
+              <div className="playerMeta">
+                <span>
+                  <span className="playerFlag" role="img" aria-label={`${player.nationality.countryName} flag`}>
+                    {countryFlag(player.nationality.countryCode)}
+                  </span>
+                  {player.nationality.countryName.toUpperCase()}
+                </span>
+                <b>{String(index + 1).padStart(2, "0")}</b>
+              </div>
               <h2>{player.name}</h2>
               <p>{player.hometown}</p>
               <dl>
@@ -37,11 +45,12 @@ export default function PlayersPage() {
           </article>
         ))}
       </section>
-
-      <aside className="photoNote">
-        <span aria-hidden="true">◎</span>
-        <div><strong>Ready for your real photos</strong><p>Add images under <code>public/golf/players</code>, then set each player&apos;s <code>photo</code> in <code>app/golf/data.ts</code>.</p></div>
-      </aside>
     </main>
   );
+}
+
+function countryFlag(countryCode: string) {
+  return [...countryCode.toUpperCase()]
+    .map((character) => String.fromCodePoint(127397 + character.charCodeAt(0)))
+    .join("");
 }

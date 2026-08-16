@@ -7,9 +7,9 @@ export default function GolfHomePage() {
       <section className="golfHero">
         <div className="golfHeroShade" />
         <div className="golfHeroContent">
-          <p className="golfEyebrow">THE 2026 PARK INVITATIONAL · AUGUST 29–30</p>
+          <p className="golfEyebrow">2026 CUM CUP · AUGUST 29–30</p>
           <h1>Two courses.<br />One champion.</h1>
-          <p>A weekend of great golf, questionable decisions, and permanent bragging rights.</p>
+          <p>Annual golf tournament held in West Chester, PA. Golfers from around the nation come to compete.</p>
           <div className="golfHeroActions">
             <Link className="golfButton golfButtonGold" href="/golf/leaderboard">View leaderboard</Link>
             <Link className="golfButton golfButtonGhost" href="/golf/scorecard">Enter a score</Link>
@@ -25,7 +25,7 @@ export default function GolfHomePage() {
       <section className="tournamentIntro golfSection">
         <div>
           <p className="golfEyebrow">THE WEEKEND AHEAD</p>
-          <h2>Welcome to the Invitational</h2>
+          <h2>Welcome to the Cup</h2>
           <p className="golfLead">Follow every group across 36 holes, view tee times, and track the numbers behind each round in one shared tournament home.</p>
         </div>
         <dl className="tournamentFacts">
@@ -37,7 +37,7 @@ export default function GolfHomePage() {
       </section>
 
       <section className="courseFeature golfSection">
-        <div className="sectionHeading"><div><p className="golfEyebrow">THE COURSES</p><h2>Thirty-six holes await</h2></div></div>
+        <div className="sectionHeading"><div><p className="golfEyebrow">THE COURSES</p><h2>Two Pristine Locations</h2></div></div>
         <div className="courseGrid">
           {golfCourses.map((course, index) => (
             <article className="courseCard" key={course.id}>
@@ -52,7 +52,7 @@ export default function GolfHomePage() {
       </section>
 
       <section className="golfCallout golfSection">
-        <div><p className="golfEyebrow">MEET THE FIELD</p><h2>Friends on the first tee.<br />Rivals by the turn.</h2></div>
+        <div><p className="golfEyebrow">MEET THE FIELD</p><h2>Explore Players<br />and Previous Winner</h2></div>
         <Link className="golfButton golfButtonGold" href="/golf/players">Players & tee times</Link>
       </section>
     </main>

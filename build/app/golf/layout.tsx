@@ -4,8 +4,8 @@ import GolfShell from "./components/GolfShell";
 import "./golf.css";
 
 export const metadata: Metadata = {
-  title: "The Park Invitational",
-  description: "Players, tee times, live scoring, and tournament statistics for The Park Invitational.",
+  title: "The CUM CUP",
+  description: "Players, tee times, live scoring, and tournament statistics for The CUM CUP.",
 };
 
 export default function GolfLayout({ children }: { children: ReactNode }) {

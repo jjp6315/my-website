@@ -89,6 +89,7 @@ export default function ScorecardForm() {
       const data = await response.json() as GolfScoresResponse & { error?: string };
       if (!response.ok) throw new Error(data.error ?? "The score could not be saved.");
       setScores(data.scores);
+      window.dispatchEvent(new Event("golf:scores-updated"));
       setStatus(selectedScore ? "Hole updated." : "Hole saved.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "The score could not be saved.");

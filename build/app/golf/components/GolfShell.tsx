@@ -18,7 +18,7 @@ export default function GolfShell({ children }: { children: ReactNode }) {
           <span aria-hidden="true">←</span> JOHN&apos;S OS
         </Link>
         <Link className="golfBrand" href="/golf" aria-label="The West Chester Ultimate Masters Cup home">
-          <span className="golfBrandMark" aria-hidden="true">⚑</span>
+          <span className="golfBrandMark" aria-hidden="true"><i /></span>
           <span><b>The CUM CUP</b></span>
         </Link>
         <nav className="golfNav" aria-label="Tournament navigation">
@@ -27,8 +27,8 @@ export default function GolfShell({ children }: { children: ReactNode }) {
       </header>
       {children}
       <footer className="golfFooter">
-        <div className="golfBrand golfBrandFooter"><span className="golfBrandMark">⚑</span><span><b>C.U.M</b><i>Cup</i></span></div>
-        <p>A two-course tournament built for friendly competition.</p>
+        <div className="golfBrand golfBrandFooter"><span className="golfBrandMark" aria-hidden="true"><i /></span><span><b>C.U.M</b><i>Cup</i></span></div>
+        <p>Annual duel of the best strokers.</p>
         <Link href="/">Return to John&apos;s OS</Link>
       </footer>
     </div>

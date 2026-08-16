@@ -46,7 +46,7 @@ export default function LeaderboardClient() {
       {error && <p className="golfAlert">{error} Run the latest D1 migration, then refresh.</p>}
 
       <section className="leaderBoard" aria-busy={loading}>
-        <div className="leaderBoardTitle"><span>THE PARK INVITATIONAL</span><h2>LEADERS</h2><p>{filter === "all" ? "OVERALL" : golfCourses.find((course) => course.id === filter)?.name.toUpperCase()}</p></div>
+        <div className="leaderBoardTitle"><span>THE CUM CUP</span><h2>LEADERS</h2><p>{filter === "all" ? "OVERALL" : golfCourses.find((course) => course.id === filter)?.name.toUpperCase()}</p></div>
         <div className="leaderTableScroll">
           <table className="leaderTable">
             <thead><tr><th>POS</th><th>PLAYER</th><th>TOTAL</th><th>THRU</th>{filter !== "all" && holes.map((hole) => <th key={hole}>{hole}</th>)}</tr></thead>
