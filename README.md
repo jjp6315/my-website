@@ -14,7 +14,6 @@ A recruiter-friendly portfolio that also leaves room for photographs, small game
 
 ```text
 app/
-  api/scores/route.ts      # server endpoint for the live leaderboard
   api/brain-bits/          # reads Brain Bits and updates the shared archive
   api/golf/route.ts        # reads and upserts per-hole tournament scores
   components/              # interactive pieces used by pages
@@ -87,8 +86,6 @@ with `npm run db:migrate:local`; `npm run release` applies it to the remote D1
 database before deploying the site.
 
 Score entry is intentionally shared for this first private-tournament version.
-If the URL will be public, add player sign-in or per-player PINs before treating
-the scores as authoritative.
 
 ## Spotify playlist
 

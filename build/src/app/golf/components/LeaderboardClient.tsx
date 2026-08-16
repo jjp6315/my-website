@@ -49,7 +49,7 @@ export default function LeaderboardClient() {
       <section className="leaderBoard" aria-busy={loading}>
         <div className="leaderBoardTitle"><span>THE CUM CUP</span><h2>LEADERS</h2><p>{filter === "all" ? "OVERALL" : golfCourses.find((course) => course.id === filter)?.name.toUpperCase()}</p></div>
         <div className="leaderTableScroll">
-          <table className="leaderTable">
+          <table className={`leaderTable ${filter === "all" ? "leaderTableOverall" : ""}`}>
             <thead><tr><th>POS</th><th>PLAYER</th><th>TOTAL</th><th>THRU</th>{selectedCourse && holes.map((hole) => <Fragment key={hole}><th>{hole}</th>{hole === 9 && <th className="leaderSubtotal">FRONT 9</th>}{hole === 18 && <th className="leaderSubtotal">TOTAL</th>}</Fragment>)}</tr></thead>
             <tbody>
               {standings.map((standing) => {

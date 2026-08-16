@@ -6,8 +6,8 @@ export default function NotesApp() {
       <p>
         I built this website to showcase my work and share my thoughts. I hope you enjoy your visit. If you have any questions or would like to connect, please feel free to reach out.
       </p>
-      <blockquote>“Start by doing what's necessary; then do what's possible; and suddenly you are doing the impossible.”
-        <br></br>
+      <blockquote>“Start by doing what&apos;s necessary; then do what&apos;s possible; and suddenly you are doing the impossible.”
+        <br />
         - Francis of Assisi
       </blockquote>
       <a href="mailto:johnpark0528@gmail.com">johnpark0528@gmail.com ↗</a>
