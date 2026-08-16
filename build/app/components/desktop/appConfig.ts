@@ -3,6 +3,7 @@ export type AppId =
   | "projects"
   | "experience"
   | "skills"
+  | "spotify"
   | "leaderboard"
   | "brain-bits"
   | "photos"
@@ -51,6 +52,12 @@ export const utilityApps: DesktopApp[] = [
     icon: "/icon/brain.svg",
     tone: "news",
   },
+  {
+    id: "spotify",
+    label: "Spotify",
+    icon: "/icon/spotify.svg",
+    tone: "spotify",
+  },
 ];
 
 export const allApps = [...desktopApps, ...utilityApps];
@@ -65,6 +72,7 @@ export const dockApps = [
   utilityApps[2],
   utilityApps[3],
   utilityApps[4],
+  utilityApps[5],
 ];
 
 // Edit this list to choose which apps appear in the phone dock.

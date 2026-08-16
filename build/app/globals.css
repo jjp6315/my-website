@@ -207,6 +207,10 @@ a {
     color: #241407
 }
 
+.appGlyph.spotify {
+    background: #000000
+}
+
 .appGlyph.terminal {
     background: linear-gradient(#2b303b, #06070a);
     font-size: 16px
@@ -457,6 +461,10 @@ a {
     color: #241407
 }
 
+.dockIcon.spotify {
+    background: #000000
+}
+
 .appWindow {
     position: absolute;
     z-index: 15;
@@ -513,12 +521,6 @@ a {
     font-family: Georgia, serif;
     font-weight: 400;
     color: #65c8ff
-}
-
-.appIntro {
-    max-width: 470px;
-    color: var(--muted);
-    line-height: 1.6
 }
 
 .tagRow {
@@ -723,91 +725,6 @@ a {
     margin: 0
 }
 
-.leaderboardApp {
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 36px;
-    align-items: center;
-    min-height: 100%;
-    padding: 40px
-}
-
-.leaderboardApp h1 {
-    font-size: 58px;
-    margin: 0;
-    letter-spacing: -.05em
-}
-
-.scoreCard {
-    padding: 22px;
-    background: #d8ff4d;
-    color: #111;
-    border-radius: 4px;
-    box-shadow: 8px 8px 0 #ff6b39;
-    transform: rotate(1deg)
-}
-
-.scoreCard>span {
-    font: 10px var(--font-geist-mono);
-    letter-spacing: .1em
-}
-
-.scoreCard ol {
-    list-style: none;
-    margin: 18px 0;
-    padding: 0;
-    border-top: 1px solid #111
-}
-
-.scoreCard li {
-    display: grid;
-    grid-template-columns: 30px 1fr auto;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, .25);
-    font-size: 12px
-}
-
-.scoreCard li i {
-    font-style: normal;
-    opacity: .55
-}
-
-.scoreCard li strong {
-    font-family: var(--font-geist-mono)
-}
-
-.scoreCard form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px
-}
-
-.scoreCard input {
-    min-width: 0;
-    width: 100%;
-    padding: 10px 9px;
-    border: 1px solid #111;
-    background: transparent;
-    font: 10px var(--font-geist-mono)
-}
-
-.scoreCard button {
-    grid-column: 1/-1;
-    padding: 11px;
-    background: #111;
-    color: #fff;
-    border: 0;
-    display: flex;
-    justify-content: space-between;
-    cursor: pointer
-}
-
-.scoreCard .formMessage {
-    min-height: 13px;
-    margin: 8px 0 0;
-    font: 9px var(--font-geist-mono)
-}
-
 .photoHeader {
     display: flex;
     justify-content: space-between;
@@ -904,6 +821,38 @@ a {
     font: inherit
 }
 
+.spotifyWindow {
+    background: #121212
+}
+
+.spotifyWindow .windowTitle {
+    background: #090909
+}
+
+.spotifyApp {
+    height: 100%;
+    min-height: 100%;
+    display: flex;
+    color: #fff;
+    background: linear-gradient(180deg, #275f41 0, #18271f 230px, #121212 430px);
+    font-family: Arial, Helvetica, sans-serif
+}
+
+.spotifyPlayer {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    background: #121212
+}
+
+.spotifyPlayer iframe {
+    flex: 1;
+    min-height: 0;
+    display: block;
+    border: 0;
+    border-radius: 0
+}
+
 .brainBitsApp {
     min-height: 100%;
     padding: 34px clamp(28px, 6vw, 70px) 54px;
@@ -954,7 +903,6 @@ a {
 
 .briefEdition,
 .briefMasthead time,
-.briefStoryMeta,
 .briefPrompt span {
     font: 9px var(--font-geist-mono);
     letter-spacing: .11em;
@@ -1408,8 +1356,7 @@ a {
         display: none
     }
 
-    .aboutGrid,
-    .leaderboardApp {
+    .aboutGrid {
         grid-template-columns: 1fr
     }
 
@@ -1430,15 +1377,6 @@ a {
 
     .skillCards {
         grid-template-columns: 1fr
-    }
-
-    .leaderboardApp {
-        padding: 28px 20px;
-        overflow: auto
-    }
-
-    .leaderboardApp .scoreCard {
-        width: 100%
     }
 
     .photoGrid {

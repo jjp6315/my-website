@@ -17,9 +17,9 @@ export default function GolfShell({ children }: { children: ReactNode }) {
         <Link className="golfBack" href="/" aria-label="Back to John's OS">
           <span aria-hidden="true">←</span> JOHN&apos;S OS
         </Link>
-        <Link className="golfBrand" href="/golf" aria-label="The Park Invitational home">
+        <Link className="golfBrand" href="/golf" aria-label="The West Chester Ultimate Masters Cup home">
           <span className="golfBrandMark" aria-hidden="true">⚑</span>
-          <span><b>PARK</b><i>Invitational</i></span>
+          <span><b>The CUM CUP</b></span>
         </Link>
         <nav className="golfNav" aria-label="Tournament navigation">
           {navigation.map((item) => <Link href={item.href} key={item.href}>{item.label}</Link>)}
@@ -27,7 +27,7 @@ export default function GolfShell({ children }: { children: ReactNode }) {
       </header>
       {children}
       <footer className="golfFooter">
-        <div className="golfBrand golfBrandFooter"><span className="golfBrandMark">⚑</span><span><b>PARK</b><i>Invitational</i></span></div>
+        <div className="golfBrand golfBrandFooter"><span className="golfBrandMark">⚑</span><span><b>C.U.M</b><i>Cup</i></span></div>
         <p>A two-course tournament built for friendly competition.</p>
         <Link href="/">Return to John&apos;s OS</Link>
       </footer>

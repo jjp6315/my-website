@@ -5,12 +5,12 @@ import {
   AboutApp,
   BrainBitsApp,
   ExperienceApp,
-  LeaderboardApp,
   NotesApp,
   PhotosApp,
   ProjectsApp,
   ResumeApp,
   SkillsApp,
+  SpotifyApp,
   TerminalApp,
 } from "./apps";
 import AppIcon from "./desktop/AppIcon";
@@ -37,6 +37,12 @@ export default function Desktop() {
 
     const syncFromUrl = () => {
       const id = window.location.hash.slice(1) as AppId;
+
+      if (id === "leaderboard") {
+        window.location.replace("/golf");
+        return;
+      }
+
       setActive(appIds.has(id) ? id : null);
     };
 
@@ -87,8 +93,10 @@ export default function Desktop() {
         return <ExperienceApp />;
       case "skills":
         return <SkillsApp />;
+      case "spotify":
+        return <SpotifyApp />;
       case "leaderboard":
-        return <LeaderboardApp />;
+        return null;
       case "brain-bits":
         return <BrainBitsApp />;
       case "photos":

@@ -1,10 +1,10 @@
 export { default as AboutApp } from "./AboutApp";
 export { default as BrainBitsApp } from "./BrainBitsApp";
 export { default as ExperienceApp } from "./ExperienceApp";
-export { default as LeaderboardApp } from "./LeaderboardApp";
 export { default as NotesApp } from "./NotesApp";
 export { default as PhotosApp } from "./PhotosApp";
 export { default as ProjectsApp } from "./ProjectsApp";
 export { default as ResumeApp } from "./ResumeApp";
 export { default as SkillsApp } from "./SkillsApp";
+export { default as SpotifyApp } from "./SpotifyApp";
 export { default as TerminalApp } from "./TerminalApp";

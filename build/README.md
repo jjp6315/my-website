@@ -90,6 +90,25 @@ Score entry is intentionally shared for this first private-tournament version.
 If the URL will be public, add player sign-in or per-player PINs before treating
 the scores as authoritative.
 
+## Spotify playlist
+
+The Spotify desktop app uses Spotify's public playlist Embed, so visitors can
+listen without this site storing a Spotify client secret or asking them to
+authorize access to their account. To connect your playlist, open its Spotify
+share link and copy the value between `/playlist/` and `?`. Replace the `id`
+in `app/content/spotify.ts`; you can edit the accessible player name there too.
+
+For example, this share URL:
+
+```text
+https://open.spotify.com/playlist/PLAYLIST_ID?si=...
+```
+
+uses `PLAYLIST_ID`. Restart the local development server after changing it.
+Only add Spotify Web API credentials if you later need custom metadata or
+features tied to a visitor's Spotify account. Secrets must stay in Cloudflare
+Worker secrets and must never use a `NEXT_PUBLIC_` variable.
+
 ## Brain Bits job
 
 Brain Bits uses the same Cloudflare Worker and D1 database as the rest of the
