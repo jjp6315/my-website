@@ -750,10 +750,21 @@ a {
     margin: 0
 }
 
-.photoGrid figure>div {
+.photoImage {
+    position: relative;
     aspect-ratio: 4/3;
+    overflow: hidden;
     border-radius: 3px;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12)
+}
+
+.photoImage img {
+    object-fit: cover;
+    transition: transform .35s ease
+}
+
+.photoGrid figure:hover .photoImage img {
+    transform: scale(1.025)
 }
 
 .photoGrid figcaption {
@@ -766,30 +777,6 @@ a {
 .photoGrid small {
     color: #6f809e;
     font: 9px var(--font-geist-mono)
-}
-
-.photo1>div {
-    background: radial-gradient(circle at 65% 30%, #ffb66f, transparent 20%), linear-gradient(155deg, #223b78, #c45c73 52%, #071328)
-}
-
-.photo2>div {
-    background: linear-gradient(140deg, #6fb2d0 0 40%, #cbcfce 41% 55%, #173244 56%)
-}
-
-.photo3>div {
-    background: radial-gradient(circle at 70% 25%, #e4f4ff 0 3%, transparent 4%), linear-gradient(#203064, #080c2a)
-}
-
-.photo4>div {
-    background: linear-gradient(25deg, #1e2526 35%, transparent 36%), linear-gradient(150deg, #e6c599, #73868a)
-}
-
-.photo5>div {
-    background: repeating-linear-gradient(120deg, #d5d4c9 0 26px, #272d38 27px 50px)
-}
-
-.photo6>div {
-    background: radial-gradient(circle at 50% 78%, #ffaf61, transparent 24%), linear-gradient(#47477c, #d87969 60%, #13162c)
 }
 
 .terminalApp {
@@ -1024,7 +1011,7 @@ a {
     padding-right: 21px
 }
 
-.briefStoryBody p + p {
+.briefStoryBody p+p {
     padding-left: 21px;
     border-left: 1px solid #d2ccbf
 }
@@ -1139,13 +1126,14 @@ a {
 
 .notesApp .noteDate {
     color: #a06334;
-    font: 10px var(--font-geist-mono);
+    font: 12px var(--font-geist-mono);
     letter-spacing: .12em
 }
 
 .notesApp h1 {
     color: #161616;
-    margin: 35px 0 28px
+    margin: 30px 0 20px;
+    font: 45px var(--font-geist-mono);
 }
 
 .notesApp>p:not(.noteDate) {
@@ -1443,7 +1431,7 @@ a {
         padding-top: 26px
     }
 
-    .briefStoryBody p + p {
+    .briefStoryBody p+p {
         padding-top: .25em;
         padding-left: 0;
         border-left: 0
