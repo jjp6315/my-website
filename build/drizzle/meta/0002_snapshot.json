@@ -47,18 +47,12 @@
       "indexes": {
         "idx_scores_score_created_at": {
           "name": "idx_scores_score_created_at",
-          "columns": [
-            "score",
-            "created_at"
-          ],
+          "columns": ["score", "created_at"],
           "isUnique": false
         },
         "idx_scores_submitter_created_at": {
           "name": "idx_scores_submitter_created_at",
-          "columns": [
-            "submitter_key",
-            "created_at"
-          ],
+          "columns": ["submitter_key", "created_at"],
           "isUnique": false
         }
       },
