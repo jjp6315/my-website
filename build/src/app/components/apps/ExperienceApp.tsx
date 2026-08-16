@@ -1,24 +1,28 @@
 const roles = [
   {
     period: "2024—NOW",
-    title: "Product Engineer",
-    company: "Your current company",
+    title: "Associate Software Engineer",
+    company: "Optum",
     description:
-      "Describe the product, your ownership, and one measurable outcome. Recruiters care most about scope and impact.",
+      'Full stack engineer working on inter application communication and data pipelines. \
+      With experience in front end development.',
   },
   {
-    period: "2022—2024",
-    title: "Software Engineer",
-    company: "Previous company",
+    period: "2022, 2023",
+    title: "Summer Software Engineering Intern",
+    company: "Optum",
     description:
-      "Explain what you built, who it served, and how the work improved a useful metric.",
+      'Worked on projects emphasizing data driven design and ground up UI development. \
+      Gained experience in full stack development and cloud computing.',
   },
   {
-    period: "EARLIER",
-    title: "The origin story",
-    company: "Education or first role",
+    period: "2020-2024",
+    title: "Bachelor of Science in Computer Science/Minor in Mathematics",
+    company: "Pennsylvania State University",
     description:
-      "A short line about how you found your way into building software.",
+      "President of the Penn State Computer Science Club. \
+      Graduated with a 3.69 GPA and Dean's List recognitions. \
+      Completed coursework in software engineering, neural networks, and data structures.",
   },
 ];
 

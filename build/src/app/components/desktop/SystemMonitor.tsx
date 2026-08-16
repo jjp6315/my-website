@@ -1,5 +1,5 @@
 const skills = [
-  ["Product engineering", 28, "green"],
+  ["Product engineering", 88, "green"],
   ["TypeScript", 84, "blue"],
   ["React", 82, "cyan"],
   ["Creative code", 76, "violet"],

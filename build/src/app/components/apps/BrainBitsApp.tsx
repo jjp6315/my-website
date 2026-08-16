@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import katex from "katex";
 import type {
   BrainBitsResponse,
   BrainBit,
@@ -156,8 +157,10 @@ export default function BrainBitsApp() {
       </section>
 
       <section className="briefStoryBody">
-        {activeBit.body.split(/\n\s*\n/).map((paragraph, index) => (
-          <p key={`${activeBit.id ?? "fallback"}-${index}`}>{paragraph}</p>
+        {splitBodyColumns(activeBit.body).map((paragraph, index) => (
+          <p key={`${activeBit.id ?? "fallback"}-${index}`}>
+            <LatexText text={paragraph} />
+          </p>
         ))}
       </section>
 
@@ -191,4 +194,43 @@ export default function BrainBitsApp() {
       </aside>
     </article>
   );
+}
+
+function splitBodyColumns(body: string): string[] {
+  const paragraphs = body.trim().split(/\n\s*\n/).filter(Boolean);
+  if (paragraphs.length === 2) return paragraphs;
+
+  // Older archived bits predate the two-column response contract. Balance
+  // their prose so they continue to fill both columns instead of leaving one blank.
+  const words = paragraphs.join(" ").split(/\s+/);
+  const midpoint = Math.ceil(words.length / 2);
+  return [words.slice(0, midpoint).join(" "), words.slice(midpoint).join(" ")]
+    .filter(Boolean);
+}
+
+function LatexText({ text }: { text: string }) {
+  const segments = text.split(/(\$\$[\s\S]+?\$\$|\$[^$\n]+?\$)/g);
+
+  return segments.map((segment, index) => {
+    const displayMode = segment.startsWith("$$") && segment.endsWith("$$");
+    const inlineMode = !displayMode && segment.startsWith("$") && segment.endsWith("$");
+    if (!displayMode && !inlineMode) return segment;
+
+    const expression = segment.slice(displayMode ? 2 : 1, displayMode ? -2 : -1);
+    const markup = katex.renderToString(expression, {
+      displayMode,
+      output: "htmlAndMathml",
+      strict: "warn",
+      throwOnError: false,
+    });
+
+    return (
+      <span
+        className={displayMode ? "briefMath briefMathDisplay" : "briefMath"}
+        // KaTeX escapes untrusted commands and emits sanitized HTML/MathML.
+        dangerouslySetInnerHTML={{ __html: markup }}
+        key={`${index}-${expression}`}
+      />
+    );
+  });
 }

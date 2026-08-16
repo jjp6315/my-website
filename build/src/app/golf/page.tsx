@@ -7,7 +7,7 @@ export default function GolfHomePage() {
         <div className="golfHeroShade" />
         <div className="golfHeroContent">
           <p className="golfEyebrow">2026 CUM CUP · AUGUST 29–30</p>
-          <h1>Two courses.<br />One champion.</h1>
+          <h1>Two courses.<br />One Cup.</h1>
           <p>Annual golf tournament held in West Chester, PA. Golfers from around the nation come to compete.</p>
           <div className="golfHeroActions">
             <a className="golfButton golfButtonGold" href="/golf/leaderboard">View leaderboard</a>

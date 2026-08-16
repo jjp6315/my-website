@@ -5,17 +5,16 @@ export default function ResumeApp() {
       <div>
         <p className="appKicker">Resume.pdf</p>
         <h1>
-          Your experience,
+          Professional
           <br />
-          one page.
+          experience
         </h1>
         <p>
-          Add your real resume as <code>public/resume.pdf</code>. This button
-          will then open the PDF in a new tab.
+          View my experience, technical background, and selected work.
         </p>
-        <button type="button" disabled>
-          Resume not uploaded yet
-        </button>
+        <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+          Open resume <b aria-hidden="true">↗</b>
+        </a>
       </div>
     </div>
   );

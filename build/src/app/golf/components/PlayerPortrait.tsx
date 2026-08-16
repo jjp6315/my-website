@@ -9,7 +9,6 @@ export default function PlayerPortrait({ player }: { player: GolfPlayer }) {
   return (
     <div className="playerPortrait playerPortraitPlaceholder" aria-label={`${player.name} photo placeholder`}>
       <span>{player.initials}</span>
-      <small>ADD PHOTO</small>
     </div>
   );
 }

@@ -26,6 +26,11 @@ export default function AboutApp() {
         <span>VB.Net</span>
         <span>Python</span>
         <span>C#</span>
+        <span>Git</span>
+        <span>Next.js</span>
+        <span>HTML</span>
+        <span>C</span>
+        <span>Scala</span>
       </div>
     </div>
   );

@@ -524,6 +524,7 @@ a {
 }
 
 .tagRow {
+    width: min(100%, 350px);
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -531,11 +532,11 @@ a {
 }
 
 .tagRow span {
-    padding: 8px 11px;
+    padding: 15px 15px;
     border: 1px solid rgba(255, 255, 255, .15);
     border-radius: 999px;
     color: #bcc8dc;
-    font: 10px var(--font-geist-mono)
+    font: 12px var(--font-geist-mono)
 }
 
 .aboutGrid {
@@ -605,7 +606,7 @@ a {
     margin-top: 32px
 }
 
-.projectList article {
+.projectCard {
     display: grid;
     grid-template-columns: 62px 1fr 34px;
     gap: 18px;
@@ -613,15 +614,17 @@ a {
     padding: 20px;
     border: 1px solid rgba(255, 255, 255, .11);
     border-radius: 14px;
+    color: inherit;
     transition: transform .2s, background .2s
 }
 
-.projectList article:hover {
+.projectCard:hover,
+.projectCard:focus-visible {
     transform: translateX(7px);
     background: rgba(255, 255, 255, .055)
 }
 
-.projectList article>span {
+.projectCard>span {
     font: 700 30px var(--font-geist-mono);
     opacity: .7
 }
@@ -643,7 +646,7 @@ a {
     text-transform: uppercase
 }
 
-.projectList article>b {
+.projectCard>b {
     font-size: 22px
 }
 
@@ -1000,20 +1003,42 @@ a {
 }
 
 .briefStoryBody {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
     max-width: 690px;
     margin: 0 auto;
     padding: 34px 0 18px;
-    columns: 2;
-    column-gap: 42px;
-    column-rule: 1px solid #d2ccbf
 }
 
 .briefStoryBody p {
+    min-width: 0;
     margin: 0 0 1.15em;
     color: #5f5b52;
     font-size: 16px;
     line-height: 1.65;
     break-inside: avoid
+}
+
+.briefStoryBody p:first-child {
+    padding-right: 21px
+}
+
+.briefStoryBody p + p {
+    padding-left: 21px;
+    border-left: 1px solid #d2ccbf
+}
+
+.briefMathDisplay {
+    display: block;
+    margin: 1.1em 0;
+    overflow-x: auto;
+    overflow-y: hidden
+}
+
+.briefMath .katex {
+    color: #2c2922;
+    font-size: 1em
 }
 
 .briefStoryBody p:first-child::first-letter {
@@ -1172,13 +1197,21 @@ a {
     color: #5fc0ff
 }
 
-.resumeApp button {
+.resumeApp a {
+    display: inline-block;
     margin-top: 16px;
     padding: 12px 16px;
     border: 1px solid rgba(255, 255, 255, .15);
     background: rgba(255, 255, 255, .06);
-    color: #8b98ac;
-    border-radius: 8px
+    color: #d7e2f4;
+    border-radius: 8px;
+    transition: background .2s, border-color .2s
+}
+
+.resumeApp a:hover,
+.resumeApp a:focus-visible {
+    border-color: rgba(95, 192, 255, .55);
+    background: rgba(95, 192, 255, .12)
 }
 
 @keyframes windowIn {
@@ -1365,7 +1398,7 @@ a {
         gap: 25px
     }
 
-    .projectList article {
+    .projectCard {
         grid-template-columns: 42px 1fr 20px;
         padding: 15px
     }
@@ -1405,8 +1438,19 @@ a {
     }
 
     .briefStoryBody {
-        columns: 1;
+        grid-template-columns: 1fr;
+        gap: 0;
         padding-top: 26px
+    }
+
+    .briefStoryBody p + p {
+        padding-top: .25em;
+        padding-left: 0;
+        border-left: 0
+    }
+
+    .briefStoryBody p:first-child {
+        padding-right: 0
     }
 
     .briefPrompt {

@@ -162,6 +162,14 @@ function validateBrainBit(value: unknown): GeneratedBrainBit {
     }
   }
 
+  const bodyColumns = (record.body as string)
+    .trim()
+    .split(/\n\s*\n/)
+    .filter(Boolean);
+  if (bodyColumns.length !== 2) {
+    throw new Error("OpenAI must return exactly two Brain Bit body paragraphs");
+  }
+
   return {
     section: record.section as string,
     title: record.title as string,
