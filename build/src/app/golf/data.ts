@@ -1,3 +1,5 @@
+export type GolfCourseId = "wyncote" | "downingtowncc";
+
 export type GolfPlayer = {
   id: string;
   name: string;
@@ -8,14 +10,14 @@ export type GolfPlayer = {
     countryName: string;
   };
   handicap: string;
-  handicapStrokes: number;
+  handicapStrokes: Record<GolfCourseId, number>;
   teeTime: string;
   group: string;
   photo?: string;
 };
 
 export type GolfCourse = {
-  id: string;
+  id: GolfCourseId;
   name: string;
   shortName: string;
   round: string;
@@ -33,7 +35,7 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Boston, MA",
     nationality: { countryCode: "KR", countryName: "South Korea" },
     handicap: "18.9",
-    handicapStrokes: 19,
+    handicapStrokes: { wyncote: 24, downingtowncc: 25 },
     teeTime: "2:00 PM",
     group: "Group 1",
     photo: "/golf/john-park.webp",
@@ -45,7 +47,7 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Baltimore, MD",
     nationality: { countryCode: "US", countryName: "United States" },
     handicap: "5.0",
-    handicapStrokes: 5,
+    handicapStrokes: { wyncote: 4, downingtowncc: 4 },
     teeTime: "2:00 PM",
     group: "Group 1",
     photo: "/golf/matty-scoffone.webp",
@@ -57,7 +59,7 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Penn Oaks, PA",
     nationality: { countryCode: "IT", countryName: "Italy" },
     handicap: "6.7",
-    handicapStrokes: 7,
+    handicapStrokes: { wyncote: 6, downingtowncc: 6 },
     teeTime: "2:09 PM",
     group: "Group 2",
     photo: "/golf/andrew-distefano.webp",
@@ -69,7 +71,7 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Philadelphia, PA",
     nationality: { countryCode: "US", countryName: "United States" },
     handicap: "14.2",
-    handicapStrokes: 14,
+    handicapStrokes: { wyncote: 14, downingtowncc: 15 },
     teeTime: "2:09 PM",
     group: "Group 2",
     photo: "/golf/jack-szymanski.webp",
@@ -81,7 +83,7 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "West Chester, PA",
     nationality: { countryCode: "US", countryName: "United States" },
     handicap: "48.0",
-    handicapStrokes: 48,
+    handicapStrokes: { wyncote: 47, downingtowncc: 48 },
     teeTime: "2:09 PM",
     group: "Group 2",
     photo: "/golf/matt-bosch.webp",
@@ -93,7 +95,7 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Philadelphia, PA",
     nationality: { countryCode: "IN", countryName: "India" },
     handicap: "24.5",
-    handicapStrokes: 25,
+    handicapStrokes: { wyncote: 26, downingtowncc: 27 },
     teeTime: "2:00 PM",
     group: "Group 1",
     photo: "/golf/arjun-chaudhary.webp",
@@ -105,7 +107,7 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "Pittsburgh, PA",
     nationality: { countryCode: "IL", countryName: "Israel" },
     handicap: "58.0",
-    handicapStrokes: 58,
+    handicapStrokes: { wyncote: 58, downingtowncc: 59 },
     teeTime: "2:00 PM",
     group: "Group 1",
     photo: "/golf/josh-berkowitz.webp",
@@ -117,7 +119,7 @@ export const golfPlayers: readonly GolfPlayer[] = [
     hometown: "West Chester, PA",
     nationality: { countryCode: "US", countryName: "United States" },
     handicap: "17.3",
-    handicapStrokes: 17,
+    handicapStrokes: { wyncote: 18, downingtowncc: 18 },
     teeTime: "2:09 PM",
     group: "Group 2",
     photo: "/golf/bobby-bosch.webp",
@@ -158,6 +160,13 @@ export function findGolfPlayer(id: string) {
 
 export function findGolfCourse(id: string) {
   return golfCourses.find((course) => course.id === id);
+}
+
+export function playingHandicapForCourse(
+  player: Pick<GolfPlayer, "handicapStrokes">,
+  courseId: GolfCourseId,
+) {
+  return player.handicapStrokes[courseId];
 }
 
 export function coursePar(course: GolfCourse) {

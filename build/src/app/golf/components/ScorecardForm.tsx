@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { golfCourses, golfPlayers } from "../data";
+import { golfCourses, golfPlayers, playingHandicapForCourse } from "../data";
+import type { GolfCourseId } from "../data";
 import { handicapStrokesForHole } from "../standings";
 import type { GolfHoleScore, GolfScoresResponse } from "../types";
 
@@ -29,7 +30,8 @@ export default function ScorecardForm() {
   const course = golfCourses.find((item) => item.id === courseId) ?? golfCourses[0];
   const player = golfPlayers.find((item) => item.id === playerId) ?? golfPlayers[0];
   const hasSelectedPlayer = golfPlayers.some((item) => item.id === playerId);
-  const handicapStrokes = handicapStrokesForHole(player.handicapStrokes, course.strokeIndexes[hole - 1]);
+  const playingHandicap = playingHandicapForCourse(player, course.id);
+  const handicapStrokes = handicapStrokesForHole(playingHandicap, course.strokeIndexes[hole - 1]);
   const netScore = form.score - handicapStrokes;
   const selectedScore = useMemo(
     () => scores.find((score) => score.playerId === playerId && score.courseId === courseId && score.hole === hole),
@@ -79,7 +81,7 @@ export default function ScorecardForm() {
     applySelection(nextPlayerId, courseId, hole);
   }
 
-  function chooseCourse(nextCourseId: string) {
+  function chooseCourse(nextCourseId: GolfCourseId) {
     setCourseId(nextCourseId);
     applySelection(playerId, nextCourseId, hole);
   }
@@ -116,17 +118,17 @@ export default function ScorecardForm() {
   }
 
   const playerCourseScores = scores.filter((score) => score.playerId === playerId && score.courseId === courseId);
-  const frontTotal = totalForRange(playerCourseScores, 1, 9, player.handicapStrokes, course.strokeIndexes);
-  const backTotal = totalForRange(playerCourseScores, 10, 18, player.handicapStrokes, course.strokeIndexes);
+  const frontTotal = totalForRange(playerCourseScores, 1, 9, playingHandicap, course.strokeIndexes);
+  const backTotal = totalForRange(playerCourseScores, 10, 18, playingHandicap, course.strokeIndexes);
 
   return (
     <div className="scorecardLayout">
       <aside className="roundSetup">
         <p className="golfEyebrow">ROUND SETUP</p>
         <label>Player<select value={playerId} onChange={(event) => choosePlayer(event.target.value)}><option value="" disabled>Choose your player</option>{golfPlayers.map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select></label>
-        <label>Course<select value={courseId} onChange={(event) => chooseCourse(event.target.value)}>{golfCourses.map((item) => <option value={item.id} key={item.id}>{item.round} · {item.name}</option>)}</select></label>
+        <label>Course<select value={courseId} onChange={(event) => chooseCourse(event.target.value as GolfCourseId)}>{golfCourses.map((item) => <option value={item.id} key={item.id}>{item.round} · {item.name}</option>)}</select></label>
         <div className="roundProgress"><span><b>{playerCourseScores.length}</b> / 18 holes</span><div><i style={{ width: `${(playerCourseScores.length / 18) * 100}%` }} /></div></div>
-        <dl><div><dt>Playing handicap</dt><dd>{player.handicapStrokes}</dd></div><div><dt>Front nine · net (gross)</dt><dd>{formatTotals(frontTotal)}</dd></div><div><dt>Back nine · net (gross)</dt><dd>{formatTotals(backTotal)}</dd></div><div><dt>Round · net (gross)</dt><dd>{formatCombinedTotals(frontTotal, backTotal)}</dd></div></dl>
+        <dl><div><dt>Playing handicap</dt><dd>{playingHandicap}</dd></div><div><dt>Front nine · net (gross)</dt><dd>{formatTotals(frontTotal)}</dd></div><div><dt>Back nine · net (gross)</dt><dd>{formatTotals(backTotal)}</dd></div><div><dt>Round · net (gross)</dt><dd>{formatCombinedTotals(frontTotal, backTotal)}</dd></div></dl>
       </aside>
 
       <section className="scoreEntry">

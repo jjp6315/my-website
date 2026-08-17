@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useMemo, useState } from "react";
-import { golfCourses } from "../data";
+import { golfCourses, playingHandicapForCourse } from "../data";
 import { buildStandings, formatThru, formatToPar, handicapStrokesForHole } from "../standings";
 import type { GolfHoleScore, GolfScoresResponse } from "../types";
 
@@ -50,12 +50,15 @@ export default function LeaderboardClient() {
         <div className="leaderBoardTitle"><span>THE CUM CUP</span><h2>LEADERS</h2><p>{filter === "all" ? "OVERALL" : golfCourses.find((course) => course.id === filter)?.name.toUpperCase()}</p></div>
         <div className="leaderTableScroll">
           <table className={`leaderTable ${filter === "all" ? "leaderTableOverall" : ""}`}>
-            <thead><tr><th>POS</th><th>PLAYER</th><th>TOTAL</th><th>THRU</th>{selectedCourse && holes.map((hole) => <Fragment key={hole}><th>{hole}</th>{hole === 9 && <th className="leaderSubtotal">FRONT 9</th>}{hole === 18 && <th className="leaderSubtotal">TOTAL</th>}</Fragment>)}</tr></thead>
+            <thead><tr><th>POS</th><th>PLAYER</th><th>TOTAL</th><th>THRU</th>{selectedCourse && holes.map((hole) => <Fragment key={hole}><th className="leaderHoleHeader"><span>{hole}</span><small>HCP {selectedCourse.strokeIndexes[hole - 1]}</small></th>{hole === 9 && <th className="leaderSubtotal">FRONT 9</th>}{hole === 18 && <th className="leaderSubtotal">TOTAL</th>}</Fragment>)}</tr></thead>
             <tbody>
               {standings.map((standing) => {
                 const playerScores = visibleScores.filter((score) => score.playerId === standing.player.id);
-                const frontNine = selectedCourse ? scoreTotal(playerScores, selectedCourse, standing.player.handicapStrokes, 1, 9) : null;
-                const roundTotal = selectedCourse ? scoreTotal(playerScores, selectedCourse, standing.player.handicapStrokes, 1, 18) : null;
+                const playingHandicap = selectedCourse
+                  ? playingHandicapForCourse(standing.player, selectedCourse.id)
+                  : 0;
+                const frontNine = selectedCourse ? scoreTotal(playerScores, selectedCourse, playingHandicap, 1, 9) : null;
+                const roundTotal = selectedCourse ? scoreTotal(playerScores, selectedCourse, playingHandicap, 1, 18) : null;
 
                 return <tr key={standing.player.id}>
                   <td>{standing.position}</td>
@@ -68,7 +71,7 @@ export default function LeaderboardClient() {
                   {selectedCourse && holes.map((hole) => {
                     const result = visibleScores.find((score) => score.playerId === standing.player.id && score.hole === hole);
                     const handicapStrokes = result
-                      ? handicapStrokesForHole(standing.player.handicapStrokes, selectedCourse.strokeIndexes[hole - 1])
+                      ? handicapStrokesForHole(playingHandicap, selectedCourse.strokeIndexes[hole - 1])
                       : 0;
                     const netScore = result ? result.score - handicapStrokes : null;
                     const difference = netScore === null ? 0 : netScore - selectedCourse.pars[hole - 1];
@@ -83,7 +86,7 @@ export default function LeaderboardClient() {
             </tbody>
           </table>
         </div>
-      </section>
+      </section >
 
       <section className="statGrid" aria-label="Tournament statistics">
         {standings.map((standing) => (

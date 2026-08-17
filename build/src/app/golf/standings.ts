@@ -1,4 +1,4 @@
-import { golfCourses, golfPlayers } from "./data";
+import { golfCourses, golfPlayers, playingHandicapForCourse } from "./data";
 import type { GolfHoleScore } from "./types";
 
 export type GolfStanding = {
@@ -32,7 +32,9 @@ export function buildStandings(scores: GolfHoleScore[]): GolfStanding[] {
     const grossStrokes = playerScores.reduce((total, score) => total + score.score, 0);
     const handicapStrokesApplied = playerScores.reduce((total, score) => {
       const course = golfCourses.find((item) => item.id === score.courseId);
-      return total + (course ? handicapStrokesForHole(player.handicapStrokes, course.strokeIndexes[score.hole - 1]) : 0);
+      if (!course) return total;
+      const playingHandicap = playingHandicapForCourse(player, course.id);
+      return total + handicapStrokesForHole(playingHandicap, course.strokeIndexes[score.hole - 1]);
     }, 0);
     const netStrokes = grossStrokes - handicapStrokesApplied;
 

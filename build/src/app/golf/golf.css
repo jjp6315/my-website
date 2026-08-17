@@ -934,6 +934,26 @@ body:has(.golfSite) {
   letter-spacing: .1em;
 }
 
+.leaderTable .leaderHoleHeader {
+  min-width: 54px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.leaderHoleHeader span,
+.leaderHoleHeader small {
+  display: block;
+  font-size: 13px;
+}
+
+.leaderHoleHeader small {
+  margin-top: 4px;
+  color: #7a817c;
+  font-size: 8px;
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+
 .leaderTable tbody>tr>th {
   min-width: 210px;
   text-align: left;
